@@ -5,49 +5,55 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <title>Video Editor Pro</title>
     <style>
-        body, html { 
-            margin: 0; padding: 0; width: 100%; height: 100dvh; 
-            background: #000; color: white; overflow: hidden; font-family: sans-serif; 
-        }
-        
-        .page { 
-            display: flex; flex-direction: column; height: 100dvh; width: 100%; 
-            padding-bottom: env(safe-area-inset-bottom); /* iPhone အောက်ဘားနဲ့ မတိုက်အောင် */
-        }
+        body, html { margin: 0; padding: 0; width: 100%; height: 100dvh; background: #000; color: white; overflow: hidden; font-family: sans-serif; }
+        .page { display: flex; flex-direction: column; height: 100dvh; width: 100%; }
 
-        /* Preview (40dvh) */
         .preview-area { height: 40dvh; background: #000; display: flex; justify-content: center; align-items: center; position: relative; }
+        #videoPreview { max-width: 100%; max-height: 100%; object-fit: contain; display: none; }
         
-        /* Timeline (52dvh) - Timeline ကို အများဆုံးနေရာပေးထားတယ် */
-        .timeline-area { height: 52dvh; background: #1a1a1a; border-top: 1px solid #333; padding: 5px; overflow: hidden; }
-
-        /* Toolbar (8dvh) - အောက်ဆုံးထိ ကပ်ချထားတယ် */
-        .toolbar { 
-            height: 8dvh; background: #000; 
-            display: flex; justify-content: space-around; align-items: flex-end; /* အောက်ဘက်ကို ကပ်စေတယ် */
-            border-top: 1px solid #333; padding-bottom: 5px; 
+        .top-ui { position: absolute; top: 10px; left: 10px; right: 10px; display: flex; justify-content: space-between; z-index: 10; }
+        
+        /* 3D Button Style */
+        .action-btn { 
+            background: #333; 
+            border: none; 
+            color: white; 
+            padding: 6px 15px; 
+            border-radius: 6px; 
+            cursor: pointer; 
+            font-size: 13px;
+            /* 3D Effect */
+            box-shadow: 0 4px 0 #111;
+            transition: all 0.1s;
+        }
+        .action-btn:active {
+            box-shadow: 0 0 0 #111;
+            transform: translateY(4px);
         }
 
+        .timeline-area { height: 50dvh; background: #1a1a1a; border-top: 1px solid #333; }
+        .toolbar { height: 10dvh; background: #000; display: flex; justify-content: space-around; align-items: center; border-top: 1px solid #333; padding-bottom: env(safe-area-inset-bottom); }
         .tool-item { display: flex; flex-direction: column; align-items: center; font-size: 9px; cursor: pointer; color: #ccc; }
-        .tool-item span { font-size: 16px; margin-bottom: 1px; }
-        
-        .action-btn { background: rgba(0,0,0,0.5); border: 1px solid #444; color: white; padding: 4px 12px; border-radius: 20px; font-size: 11px; }
+        .tool-item span { font-size: 16px; margin-bottom: 2px; }
     </style>
 </head>
 <body>
 
 <div class="page">
     <div class="preview-area">
-        <div style="position:absolute; top:10px; left:10px; right:10px; display:flex; justify-content:space-between;">
-            <button class="action-btn">✕</button>
-            <button class="action-btn" style="background:#007bff; border:none;">Export</button>
+        <div class="top-ui">
+            <button class="action-btn" onclick="window.history.back()">✕</button>
+            <div style="display: flex; gap: 10px;">
+                <button class="action-btn" onclick="document.getElementById('fileInput').click()">Import</button>
+                <button class="action-btn" style="background:#007bff; box-shadow: 0 4px 0 #0056b3;">Export</button>
+            </div>
         </div>
-        <button id="importBtn" onclick="document.getElementById('fileInput').click()" style="background:#333; border:none; color:white; padding:10px 20px; cursor:pointer;">Import Video</button>
+        
+        <video id="videoPreview" controls></video>
         <input type="file" id="fileInput" style="display:none;" accept="video/*">
     </div>
 
-    <div class="timeline-area">
-        </div>
+    <div class="timeline-area"></div>
 
     <div class="toolbar">
         <div class="tool-item"><span>✂️</span>Edit</div>
@@ -57,6 +63,19 @@
         <div class="tool-item"><span>🖼️</span>Overlay</div>
     </div>
 </div>
+
+<script>
+    const fileInput = document.getElementById('fileInput');
+    const videoPreview = document.getElementById('videoPreview');
+
+    fileInput.addEventListener('change', function(event) {
+        const file = event.target.files[0];
+        if (file) {
+            videoPreview.src = URL.createObjectURL(file);
+            videoPreview.style.display = 'block';
+        }
+    });
+</script>
 
 </body>
 </html>
