@@ -12,7 +12,6 @@
 
         .lang-wrapper { position: relative; display: flex; flex-direction: column; align-items: center; }
 
-        /* 3D Popup Style */
         .confirm-msg { 
             display: none; position: absolute; top: -55px; width: 100%;
             background: #ffffff; padding: 10px 0; border-radius: 8px; 
@@ -21,7 +20,6 @@
             font-weight: bold; cursor: pointer; z-index: 10; text-align: center;
         }
 
-        /* ခလုတ်ပုံစံ */
         .btn { 
             width: 100%; height: 60px; display: flex; align-items: center; justify-content: center;
             box-sizing: border-box; background: #ffffff; color: #333; border: none; padding: 0 16px; 
@@ -31,7 +29,6 @@
         }
         .btn:active { transform: translateY(4px); border-bottom: none; box-shadow: none; }
         
-        /* ခလုတ်အရောင်များ */
         .btn-primary { background: #4caf50; color: white; border-bottom: 5px solid #388e3c; }
         .btn-premium { background: #607d8b; color: white; border-bottom: 5px solid #455a64; }
         .btn-shop { background: #ff9800; color: white; border-bottom: 5px solid #e65100; }
@@ -43,20 +40,14 @@
     <div class="header" id="mainHeader">Myanmar Recap Group</div>
     
     <div class="btn-column">
-        
         <a href="videos.html" class="btn btn-premium" id="btn1">English/China Videos</a>
-        
         <button class="btn btn-primary" id="btn2">Auto Recap</button>
         <button class="btn btn-primary" id="btn3">Translated Movies</button>
         <button class="btn btn-primary" id="btn4">Video Download</button>
         <button class="btn btn-premium" id="btn5">Create Photos</button>
-        
         <a href="translate.html" class="btn btn-premium" id="btn6">Translate</a>
-        
         <button class="btn btn-primary" id="btn7">Text to Speech</button>
-        
         <a href="manual-edit.html" class="btn btn-primary" id="btn8">Manual Edit Videos</a>
-        
         <button class="btn btn-shop" id="btn9">🛒 Shop</button>
         
         <div class="lang-wrapper">
@@ -80,7 +71,7 @@
         let header = document.getElementById("mainHeader");
         let confirmMsg = document.getElementById("confirmMsg");
         
-        // Link ဖြစ်သွားတဲ့ ခလုတ်များကို ဖယ်ထုတ်ပြီး ကျန်တာတွေကိုပဲ Array ထဲထားပါတယ်
+        // ဤနေရာတွင် ID အစီအစဉ်အတိုင်း တွဲထားသည်
         let ids = ["btn2", "btn3", "btn4", "btn5", "btn7", "btn9"];
 
         if (isEnglish) {
@@ -90,7 +81,7 @@
             document.getElementById("btn8").innerText = "Manual Edit Videos";
             confirmMsg.innerText = "🇬🇧 English";
             header.innerText = "Myanmar Recap Group";
-            const myTexts = ["အလိုအလျောက် Recap", "ဘာသာပြန် ဇာတ်ကား", "Video ဒေါင်းလုပ်", "ဓာတ်ပုံဖန်တီးမည်", "စာသားမှအသံ", "Manual Edit Videos", "🛒 ဆိုင်"];
+            const myTexts = ["အလိုအလျောက် Recap", "ဘာသာပြန် ဇာတ်ကား", "Video ဒေါင်းလုပ်", "ဓာတ်ပုံဖန်တီးမည်", "စာသားမှအသံ", "🛒 ဆိုင်"];
             ids.forEach((id, index) => document.getElementById(id).innerText = myTexts[index]);
             isEnglish = false;
         } else {
@@ -100,7 +91,7 @@
             document.getElementById("btn8").innerText = "Manual Edit Videos";
             confirmMsg.innerText = "🇲🇲 မြန်မာ";
             header.innerText = "Myanmar Recap Group";
-            const enTexts = ["Auto Recap", "Translated Movies", "Video Download", "Create Photos", "Text to Speech", "Manual Edit Video", "🛒 Shop"];
+            const enTexts = ["Auto Recap", "Translated Movies", "Video Download", "Create Photos", "Text to Speech", "🛒 Shop"];
             ids.forEach((id, index) => document.getElementById(id).innerText = enTexts[index]);
             isEnglish = true;
         }
