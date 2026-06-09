@@ -5,77 +5,65 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Video Editor Pro</title>
     <style>
-        body { margin: 0; padding: 0; background: #000; color: white; height: 100vh; overflow: hidden; display: flex; flex-direction: column; }
+        body { margin: 0; padding: 0; background: #000; color: white; height: 100vh; overflow: hidden; display: flex; flex-direction: column; font-family: sans-serif; }
 
-        /* ၁။ Preview Area (40%) */
-        .preview-area {
-            height: 40%;
-            width: 100%;
-            background: #000;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            position: relative;
-        }
+        /* Preview Area (အပေါ်ပိုင်း) */
+        .preview-area { height: 50vh; width: 100%; background: #000; display: flex; justify-content: center; align-items: center; position: relative; }
         #videoPreview { width: 100%; height: 100%; object-fit: contain; }
         
+        /* Top Buttons (Overlay) */
         .top-ui { position: absolute; top: 10px; left: 10px; right: 10px; display: flex; justify-content: space-between; z-index: 10; }
-        .action-btn { background: rgba(0,0,0,0.5); color: white; border: none; padding: 8px 15px; border-radius: 20px; cursor: pointer; }
+        .action-btn { background: rgba(0,0,0,0.5); color: white; border: none; padding: 6px 15px; border-radius: 20px; cursor: pointer; font-size: 13px; }
 
-        /* ၂။ Timeline Area (40%) */
-        .timeline-area {
-            height: 40%;
-            background: #1a1a1a;
-            border-top: 1px solid #333;
-            overflow-y: auto;
-            padding: 10px;
-        }
+        /* Timeline Area (အလယ်ပိုင်း) */
+        .timeline-wrapper { height: 35vh; background: #1a1a1a; display: flex; flex-direction: column; border-top: 1px solid #333; }
+        .track-container { flex: 1; padding: 15px; overflow-x: auto; display: flex; align-items: center; }
+        .video-clip { width: 120px; height: 60px; background: #333; border: 1px solid #555; border-radius: 4px; display: flex; align-items: center; justify-content: center; }
 
-        /* ၃။ Toolbar (20%) - ဒါက အမြဲပေါ်နေမှာပါ */
-        .toolbar {
-            height: 20%;
-            background: #000;
-            display: flex;
-            justify-content: space-around;
-            align-items: center;
-            border-top: 1px solid #333;
-        }
-        .tool { display: flex; flex-direction: column; align-items: center; cursor: pointer; font-size: 12px; }
+        /* Bottom Toolbar (အောက်ဆုံးပိုင်း) */
+        .bottom-toolbar { height: 15vh; background: #000; display: flex; justify-content: space-around; align-items: center; border-top: 1px solid #333; }
+        .tool-item { display: flex; flex-direction: column; align-items: center; font-size: 10px; cursor: pointer; color: #ccc; }
+        .tool-item span { font-size: 18px; margin-bottom: 2px; }
     </style>
 </head>
 <body>
 
     <div class="preview-area">
         <div class="top-ui">
-            <button class="action-btn">✕</button>
+            <button class="action-btn" onclick="history.back()">✕</button>
             <button class="action-btn" style="background: #007bff;">Export</button>
         </div>
         <video id="videoPreview" controls style="display: none;"></video>
-        <button id="importBtn" onclick="document.getElementById('fileInput').click()">Import Video</button>
+        <button id="importBtn" style="padding: 15px 30px; background: #333; border: none; color: white; cursor: pointer;" onclick="document.getElementById('fileInput').click()">Import Video</button>
         <input type="file" id="fileInput" style="display: none;" accept="video/*" onchange="loadFile(event)">
     </div>
 
-    <div class="timeline-area">
-        <p style="color: #666; font-size: 12px;">Timeline Track Area</p>
+    <div class="timeline-wrapper">
+        <div class="track-container">
+            <div class="video-clip" id="videoClipSlot">Video</div>
+        </div>
     </div>
 
-    <div class="toolbar">
-        <div class="tool"><span>✂️</span>Edit</div>
-        <div class="tool"><span>🎵</span>Audio</div>
-        <div class="tool"><span>📝</span>Text</div>
-        <div class="tool"><span>✨</span>Effects</div>
-        <div class="tool"><span>🖼️</span>Overlay</div>
+    <div class="bottom-toolbar">
+        <div class="tool-item"><span>✂️</span>Edit</div>
+        <div class="tool-item"><span>🎵</span>Audio</div>
+        <div class="tool-item"><span>📝</span>Text</div>
+        <div class="tool-item"><span>✨</span>Effects</div>
+        <div class="tool-item"><span>🖼️</span>Overlay</div>
     </div>
 
     <script>
         function loadFile(event) {
             const video = document.getElementById('videoPreview');
             const btn = document.getElementById('importBtn');
+            const clip = document.getElementById('videoClipSlot');
             const file = event.target.files[0];
+            
             if (file) {
                 video.src = URL.createObjectURL(file);
                 video.style.display = 'block';
                 btn.style.display = 'none';
+                clip.innerText = file.name.substring(0, 10) + "...";
             }
         }
     </script>
