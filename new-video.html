@@ -8,10 +8,10 @@
         body, html { margin: 0; padding: 0; width: 100%; height: 100dvh; background: #000; color: white; font-family: sans-serif; overflow: hidden; }
         .page { display: flex; flex-direction: column; height: 100dvh; }
 
-        /* Button Area (10%) */
-        .top-button-area { height: 10dvh; background: #000; display: flex; align-items: center; justify-content: space-between; padding: 0 10px; border-bottom: 1px solid #333; }
-        .action-btn { background: #333; border: none; color: white; padding: 6px 15px; border-radius: 6px; cursor: pointer; font-size: 13px; box-shadow: 0 4px 0 #111; }
-        .action-btn:active { transform: translateY(4px); box-shadow: 0 0 0 #111; }
+        /* Button Area (5%) */
+        .top-button-area { height: 5dvh; background: #000; display: flex; align-items: center; justify-content: space-between; padding: 0 10px; border-bottom: 1px solid #333; }
+        .action-btn { background: #333; border: none; color: white; padding: 2px 10px; border-radius: 4px; cursor: pointer; font-size: 11px; }
+        .action-btn:active { transform: translateY(2px); }
 
         /* Preview Area (40%) */
         .preview-area { height: 40dvh; background: #000; display: flex; justify-content: center; align-items: center; position: relative; }
@@ -20,10 +20,10 @@
         /* Timeline Area (40%) */
         .timeline-area { height: 40dvh; background: #1a1a1a; border-top: 1px solid #333; }
 
-        /* Toolbar (10%) */
-        .toolbar { height: 10dvh; background: #000; display: flex; justify-content: space-around; align-items: center; border-top: 1px solid #333; }
-        .tool-item { display: flex; flex-direction: column; align-items: center; font-size: 9px; cursor: pointer; color: #ccc; }
-        .tool-item span { font-size: 16px; margin-bottom: 2px; }
+        /* Toolbar (15%) */
+        .toolbar { height: 15dvh; background: #000; display: flex; justify-content: space-around; align-items: center; border-top: 1px solid #333; }
+        .tool-item { display: flex; flex-direction: column; align-items: center; font-size: 10px; cursor: pointer; color: #ccc; }
+        .tool-item span { font-size: 18px; margin-bottom: 2px; }
     </style>
 </head>
 <body>
@@ -31,10 +31,10 @@
 <div class="page">
     <div class="top-button-area">
         <button class="action-btn" onclick="window.history.back()">✕</button>
-        <div style="display: flex; gap: 10px;">
+        <div style="display: flex; gap: 5px;">
             <button class="action-btn" onclick="document.getElementById('videoInput').click()">Video</button>
             <button class="action-btn" onclick="document.getElementById('imgInput').click()">Photo</button>
-            <button class="action-btn" style="background:#007bff; box-shadow: 0 4px 0 #0056b3;">Export</button>
+            <button class="action-btn" style="background:#007bff;">Export</button>
         </div>
     </div>
 
