@@ -2,84 +2,65 @@
 <html lang="my">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>p1 - Video/Photo Editor</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>p1 - Editor</title>
     <style>
-        body, html { margin: 0; padding: 0; width: 100%; height: 100dvh; background: #000; color: white; overflow: hidden; font-family: sans-serif; }
-        .page { display: flex; flex-direction: column; height: 100dvh; width: 100%; }
+        body, html { margin: 0; padding: 0; width: 100%; height: 100dvh; background: #000; color: white; overflow: hidden; }
+        .page { display: flex; flex-direction: column; height: 100dvh; }
 
-        .preview-area { height: 40dvh; background: #000; display: flex; justify-content: center; align-items: center; position: relative; }
-        #previewMedia { max-width: 100%; max-height: 100%; object-fit: contain; display: none; }
-        
-        .top-ui { position: absolute; top: 10px; left: 10px; right: 10px; display: flex; justify-content: space-between; z-index: 10; }
-        
-        .action-btn { 
-            background: #333; border: none; color: white; padding: 6px 15px; border-radius: 6px; cursor: pointer; font-size: 13px;
-            box-shadow: 0 4px 0 #111; transition: all 0.1s;
-        }
-        .action-btn:active { box-shadow: 0 0 0 #111; transform: translateY(4px); }
+        /* Preview Area - အခု ဒီမှာပဲ ပေါ်လာတော့မယ် */
+        .preview-area { height: 40dvh; background: #000; display: flex; justify-content: center; align-items: center; }
+        #previewMedia { max-width: 100%; max-height: 100%; object-fit: contain; }
 
         /* Timeline Area */
-        .timeline-area { height: 50dvh; background: #1a1a1a; border-top: 1px solid #333; display: flex; align-items: center; padding: 10px; gap: 10px; overflow-x: auto; }
-        .media-thumb { width: 80px; height: 50px; background: #444; border-radius: 4px; object-fit: cover; border: 1px solid #666; }
-
-        .toolbar { height: 10dvh; background: #000; display: flex; justify-content: space-around; align-items: center; border-top: 1px solid #333; padding-bottom: env(safe-area-inset-bottom); }
-        .tool-item { display: flex; flex-direction: column; align-items: center; font-size: 9px; cursor: pointer; color: #ccc; }
-        .tool-item span { font-size: 16px; margin-bottom: 2px; }
+        .timeline-area { height: 50dvh; background: #1a1a1a; display: flex; gap: 5px; padding: 10px; overflow-x: auto; }
+        .thumb { width: 80px; height: 60px; background: #333; cursor: pointer; }
     </style>
 </head>
 <body>
 
 <div class="page">
     <div class="preview-area">
-        <div class="top-ui">
-            <button class="action-btn" onclick="window.history.back()">✕</button>
-            <div style="display: flex; gap: 10px;">
-                <button class="action-btn" onclick="document.getElementById('fileInput').click()">Import</button>
-                <button class="action-btn" style="background:#007bff; box-shadow: 0 4px 0 #0056b3;">Export</button>
-            </div>
-        </div>
-        
         <video id="previewMedia" controls></video>
-        <input type="file" id="fileInput" style="display:none;" accept="image/*,video/*" multiple>
+        <img id="previewImg" style="display:none; max-width:100%; max-height:100%;">
     </div>
 
-    <div class="timeline-area" id="timelineArea">
+    <div class="timeline-area" id="timeline">
         </div>
 
-    <div class="toolbar">
-        <div class="tool-item"><span>✂️</span>Edit</div>
-        <div class="tool-item"><span>🎵</span>Audio</div>
-        <div class="tool-item"><span>📝</span>Text</div>
-        <div class="tool-item"><span>✨</span>Effects</div>
-        <div class="tool-item"><span>🖼️</span>Overlay</div>
-    </div>
+    <button onclick="document.getElementById('fileInput').click()">Import</button>
+    <input type="file" id="fileInput" style="display:none" accept="image/*,video/*" multiple>
 </div>
 
 <script>
     const fileInput = document.getElementById('fileInput');
-    const timelineArea = document.getElementById('timelineArea');
-    const previewMedia = document.getElementById('previewMedia');
+    const previewVideo = document.getElementById('previewMedia');
+    const previewImg = document.getElementById('previewImg');
+    const timeline = document.getElementById('timeline');
 
-    fileInput.addEventListener('change', function(event) {
-        const files = event.target.files;
-        
-        for (let i = 0; i < files.length; i++) {
-            const file = files[i];
-            const mediaURL = URL.createObjectURL(file);
+    fileInput.addEventListener('change', (e) => {
+        const files = e.target.files;
+        for (let file of files) {
+            const url = URL.createObjectURL(file);
             
-            // Timeline မှာ Thumbnail လေးတွေ ဖန်တီးပေးခြင်း
-            const img = document.createElement('img');
-            img.src = mediaURL;
-            img.className = 'media-thumb';
-            img.onclick = () => {
-                previewMedia.src = mediaURL;
-                previewMedia.style.display = 'block';
-            };
-            timelineArea.appendChild(img);
+            // 1. ပထမဆုံး ဖိုင်ကို Preview မှာ အရင်ပြမယ်
+            if (file.type.startsWith('video')) {
+                previewVideo.src = url;
+                previewVideo.style.display = 'block';
+                previewImg.style.display = 'none';
+            } else {
+                previewImg.src = url;
+                previewImg.style.display = 'block';
+                previewVideo.style.display = 'none';
+            }
+
+            // 2. ပြီးမှ Timeline မှာ ထည့်မယ်
+            const div = document.createElement('div');
+            div.className = 'thumb';
+            div.style.background = `url(${url}) center/cover`;
+            timeline.appendChild(div);
         }
     });
 </script>
-
 </body>
 </html>
