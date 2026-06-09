@@ -3,24 +3,20 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>Video Editor Pro</title>
+    <title>P1 - Video Editor</title>
     <style>
         body, html { margin: 0; padding: 0; width: 100%; height: 100dvh; background: #000; color: white; overflow: hidden; font-family: sans-serif; }
         .page { display: flex; flex-direction: column; height: 100dvh; width: 100%; }
 
-        /* Preview (40%) */
         .preview-area { height: 40dvh; background: #000; display: flex; justify-content: center; align-items: center; position: relative; }
         #videoPreview { max-width: 100%; max-height: 100%; object-fit: contain; display: none; }
+        #imgPreview { max-width: 100%; max-height: 100%; object-fit: contain; display: none; }
         
-        /* Top Navigation */
         .top-ui { position: absolute; top: 10px; left: 10px; right: 10px; display: flex; justify-content: space-between; z-index: 10; }
         .action-btn { background: rgba(0,0,0,0.5); border: 1px solid #444; color: white; padding: 6px 15px; border-radius: 20px; cursor: pointer; font-size: 13px; }
 
-        /* Timeline (50%) */
         .timeline-area { height: 50dvh; background: #1a1a1a; border-top: 1px solid #333; position: relative; }
-
-        /* Toolbar (10%) */
-        .toolbar { height: 10dvh; background: #000; display: flex; justify-content: space-around; align-items: center; border-top: 1px solid #333; padding-bottom: env(safe-area-inset-bottom); }
+        .toolbar { height: 10dvh; background: #000; display: flex; justify-content: space-around; align-items: center; border-top: 1px solid #333; }
         .tool-item { display: flex; flex-direction: column; align-items: center; font-size: 9px; cursor: pointer; color: #ccc; }
         .tool-item span { font-size: 16px; margin-bottom: 2px; }
     </style>
@@ -28,23 +24,24 @@
 <body>
 
 <div class="page">
-    <div class="preview-area" id="previewArea">
+    <div class="preview-area">
         <div class="top-ui">
             <button class="action-btn" onclick="window.history.back()">✕</button>
-            <button class="action-btn" style="background:#007bff; border:none;">Export</button>
+            <div style="display: flex; gap: 10px;">
+                <button class="action-btn" onclick="document.getElementById('videoInput').click()">Import Video</button>
+                <button class="action-btn" onclick="document.getElementById('imgInput').click()">Import Photo</button>
+                <button class="action-btn" style="background:#007bff; border:none;">Export</button>
+            </div>
         </div>
         
         <video id="videoPreview" controls></video>
+        <img id="imgPreview">
         
-        <button id="importBtn" onclick="document.getElementById('fileInput').click()" 
-                style="background:#333; border:none; color:white; padding:15px 30px; cursor:pointer; border-radius:8px;">
-            Import Video
-        </button>
-        <input type="file" id="fileInput" style="display:none;" accept="video/*">
+        <input type="file" id="videoInput" style="display:none;" accept="video/*" multiple>
+        <input type="file" id="imgInput" style="display:none;" accept="image/*" multiple>
     </div>
 
-    <div class="timeline-area">
-        </div>
+    <div class="timeline-area"></div>
 
     <div class="toolbar">
         <div class="tool-item"><span>✂️</span>Edit</div>
@@ -56,20 +53,24 @@
 </div>
 
 <script>
-    const fileInput = document.getElementById('fileInput');
+    const videoInput = document.getElementById('videoInput');
+    const imgInput = document.getElementById('imgInput');
     const videoPreview = document.getElementById('videoPreview');
-    const importBtn = document.getElementById('importBtn');
+    const imgPreview = document.getElementById('imgPreview');
 
-    fileInput.addEventListener('change', function(event) {
-        const file = event.target.files[0];
-        if (file) {
-            // Video အလုပ်လုပ်အောင်လုပ်ခြင်း
-            const videoURL = URL.createObjectURL(file);
-            videoPreview.src = videoURL;
+    videoInput.addEventListener('change', function(e) {
+        if (e.target.files[0]) {
+            videoPreview.src = URL.createObjectURL(e.target.files[0]);
             videoPreview.style.display = 'block';
-            
-            // Import ခလုတ်ဖျောက်ခြင်း
-            importBtn.style.display = 'none';
+            imgPreview.style.display = 'none';
+        }
+    });
+
+    imgInput.addEventListener('change', function(e) {
+        if (e.target.files[0]) {
+            imgPreview.src = URL.createObjectURL(e.target.files[0]);
+            imgPreview.style.display = 'block';
+            videoPreview.style.display = 'none';
         }
     });
 </script>
