@@ -10,20 +10,26 @@
         .header { text-align: center; font-size: 22px; font-weight: bold; margin-bottom: 20px; color: #333; }
         .btn-column { display: flex; flex-direction: column; gap: 12px; }
 
-        /* ခလုတ်နှင့် ကပ်လျက်စာတန်း အုပ်စု */
-        .lang-wrapper { display: flex; flex-direction: column; gap: 4px; }
-        
+        /* Language Wrapper - Popup အတွက် အရေးကြီးတယ် */
+        .lang-wrapper { position: relative; display: flex; flex-direction: column; align-items: center; }
+
+        /* 3D Popup Style */
         .confirm-msg { 
-            display: none; text-align: center; font-size: 13px; color: #d32f2f; 
-            font-weight: bold; cursor: pointer; padding: 5px;
-            background: #ffebee; border-radius: 8px; border: 1px dashed #d32f2f;
+            display: none; position: absolute; top: -55px; 
+            background: #ffffff; padding: 10px 20px; border-radius: 8px; 
+            box-shadow: 0 8px 16px rgba(0,0,0,0.2); 
+            border: 1px solid #ddd; color: #d32f2f;
+            font-weight: bold; cursor: pointer; z-index: 10;
         }
 
+        /* ခလုတ်ပုံစံ */
         .btn { 
-            background: #ffffff; color: #333; border: none; padding: 16px; border-radius: 12px; 
-            font-size: 16px; font-weight: 600; cursor: pointer; transition: 0.1s; 
-            border-bottom: 5px solid #ccc; box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            width: 100%; background: #ffffff; color: #333; border: none; padding: 16px; 
+            border-radius: 12px; font-size: 16px; font-weight: 600; cursor: pointer; 
+            transition: 0.1s; border-bottom: 5px solid #ccc; 
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1); text-align: center;
         }
+        .btn:active { transform: translateY(4px); border-bottom: none; box-shadow: none; }
         .btn-primary { background: #4caf50; color: white; border-bottom: 5px solid #388e3c; }
         .btn-premium { background: #607d8b; color: white; border-bottom: 5px solid #455a64; }
         .btn-shop { background: #ff9800; color: white; border-bottom: 5px solid #e65100; }
@@ -36,12 +42,12 @@
     
     <div class="btn-column">
         <button class="btn btn-premium" id="btn1">English/China Videos</button>
-        <button class="btn btn-primary" id="btn2">အလိုအလျောက် Recap</button>
-        <button class="btn btn-primary" id="btn3">ဘာသာပြန် ဇာတ်ကား</button>
-        <button class="btn btn-primary" id="btn4">Video ဒေါင်းလုပ်</button>
-        <button class="btn btn-premium" id="btn5">ဓာတ်ပုံဖန်တီးမည်</button>
-        <button class="btn btn-premium" id="btn6">ဘာသာပြန်မည်</button>
-        <button class="btn btn-primary" id="btn7">စာသားမှအသံ</button>
+        <button class="btn btn-primary" id="btn2">Auto Recap</button>
+        <button class="btn btn-primary" id="btn3">Translated Movies</button>
+        <button class="btn btn-primary" id="btn4">Video Download</button>
+        <button class="btn btn-premium" id="btn5">Create Photos</button>
+        <button class="btn btn-premium" id="btn6">Translate</button>
+        <button class="btn btn-primary" id="btn7">Text to Speech</button>
         <button class="btn btn-primary" id="btn8">Manual Edit Videos</button>
         <button class="btn btn-shop" id="btn10">🛒 Shop</button>
         
@@ -56,7 +62,8 @@
     let isEnglish = true;
 
     function showConfirm() {
-        document.getElementById("confirmMsg").style.display = "block";
+        let msg = document.getElementById("confirmMsg");
+        msg.style.display = (msg.style.display === "block") ? "none" : "block";
     }
 
     function applyLanguageChange() {
@@ -70,7 +77,7 @@
         if (isEnglish) {
             btn.innerText = "🇲🇲 မြန်မာ";
             confirmMsg.innerText = "🇬🇧 Switch to English";
-            header.innerText = "မြန်မာရီကပ်ပါး ဂရု";
+            header.innerText = "Myanmar Recapper Group";
             const myTexts = ["အင်္ဂလိပ်/တရုတ် ဗီဒီယိုများ", "အလိုအလျောက် Recap", "ဘာသာပြန် ဇာတ်ကား", "Video ဒေါင်းလုပ်", "ဓာတ်ပုံဖန်တီးမည်", "ဘာသာပြန်မည်", "စာသားမှအသံ", "Manual Edit Videos", "🛒 ဆိုင်"];
             ids.forEach((id, index) => document.getElementById(id).innerText = myTexts[index]);
             isEnglish = false;
