@@ -2,37 +2,64 @@
 <html lang="my">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>P11 - Professional Timeline</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>P1 + P11 Integrated Editor</title>
     <style>
         body, html { margin: 0; padding: 0; width: 100%; height: 100dvh; background: #000; color: white; font-family: sans-serif; overflow: hidden; }
         .page { display: flex; flex-direction: column; height: 100dvh; }
 
+        /* Top Bar */
+        .top-button-area { height: 5dvh; background: #111; display: flex; align-items: center; justify-content: space-between; padding: 0 10px; border-bottom: 1px solid #333; }
+        .action-btn { background: #555; border: none; color: white; padding: 3px 12px; border-radius: 5px; cursor: pointer; font-size: 11px; }
+        .export-btn { background: #007bff; }
+
+        /* Preview */
+        .preview-area { height: 40dvh; background: #000; display: flex; justify-content: center; align-items: center; }
+        #videoPreview, #imgPreview { max-width: 100%; max-height: 100%; object-fit: contain; display: none; }
+
         /* Timeline Area */
         .timeline-area { height: 45dvh; background: #1a1a1a; border-top: 1px solid #333; position: relative; display: flex; flex-direction: column; }
         
-        /* Ruler - အလယ်က Playhead နဲ့ ချိန်ညှိထား */
-        #timelineRuler { height: 25px; background: #222; display: flex; align-items: flex-end; padding-left: 50vw; color: #888; font-size: 10px; overflow-x: hidden; }
+        /* Ruler */
+        #timelineRuler { height: 25px; background: #222; display: flex; align-items: flex-end; padding-left: 50vw; color: #888; font-size: 10px; overflow-x: hidden; border-bottom: 1px solid #333; }
         .tick { width: 40px; flex-shrink: 0; border-left: 1px solid #555; padding-left: 2px; }
-
-        /* Playhead - အလယ်မှာ အသေထားခြင်း */
+        
+        /* Playhead */
         #playhead { position: absolute; left: 50vw; top: 25px; bottom: 0; width: 2px; background: #ff4757; z-index: 20; pointer-events: none; }
         #playhead::before { content: ''; position: absolute; top: 0; left: -4px; border-left: 5px solid transparent; border-right: 5px solid transparent; border-top: 8px solid #ff4757; }
         
+        /* Tracks */
         .tracks-wrapper { height: 33.33%; display: flex; }
-        .side-tools { width: 70px; background: #1a1a1a; z-index: 11; border-right: 1px solid #333; }
-        
-        /* Container - Playhead နဲ့ ချိန်ညှိရန် padding-left */
-        .tracks-container { flex-grow: 1; overflow-x: auto; position: relative; padding-left: 50vw; padding-right: 50vw; }
+        .side-tools { width: 70px; background: #1a1a1a; z-index: 100; border-right: 1px solid #333; display: flex; flex-direction: column; justify-content: space-around; }
+        .tracks-container { flex-grow: 1; overflow-x: auto; position: relative; padding-left: 50vw; padding-right: 50vw; display: flex; align-items: center; }
         .track-row { height: 33.33%; display: flex; align-items: center; padding: 2px 5px; min-width: max-content; }
         
         .video-clip { position: relative; height: 25px; background: #333; border: 1px solid #555; margin-right: 5px; flex-shrink: 0; cursor: pointer; }
         .video-clip video, .video-clip img { width: 100%; height: 100%; object-fit: cover; }
+
+        /* Bottom Toolbar */
+        .bottom-toolbar { height: 10dvh; background: #000; display: flex; justify-content: space-around; align-items: center; border-top: 1px solid #333; font-size: 9px; color: #ccc; }
     </style>
 </head>
 <body>
 
 <div class="page">
+    <div class="top-button-area">
+        <button class="action-btn" onclick="window.history.back()">✕</button>
+        <div style="display: flex; gap: 5px;">
+            <button class="action-btn" onclick="document.getElementById('videoInput').click()">Video</button>
+            <button class="action-btn" onclick="document.getElementById('imgInput').click()">Photo</button>
+            <button class="action-btn export-btn">Export</button>
+        </div>
+    </div>
+
+    <div class="preview-area">
+        <video id="videoPreview" controls></video>
+        <img id="imgPreview">
+        <input type="file" id="videoInput" style="display:none;" accept="video/*" multiple>
+        <input type="file" id="imgInput" style="display:none;" accept="image/*" multiple>
+    </div>
+
     <div class="timeline-area">
         <div id="timelineRuler"></div>
         <div id="playhead"></div>
@@ -43,31 +70,55 @@
             </div>
         </div>
     </div>
+
+    <div class="bottom-toolbar">
+        <div class="tool-item"><span>✂️</span>Edit</div>
+        <div class="tool-item"><span>🎵</span>Audio</div>
+        <div class="tool-item"><span>📝</span>Text</div>
+        <div class="tool-item"><span>✨</span>Effects</div>
+        <div class="tool-item"><span>🖼️</span>Overlay</div>
+    </div>
 </div>
 
 <script>
+    const videoTrack = document.getElementById('videoTrack');
     const scrollContainer = document.getElementById('scrollContainer');
     const ruler = document.getElementById('timelineRuler');
-    const videoPreview = document.getElementById('videoPreview');
+    let totalTimelineDuration = 0;
 
-    // Ruler ဖန်တီးခြင်း
-    for (let i = 0; i <= 600; i++) {
-        const tick = document.createElement('div');
-        tick.className = 'tick';
-        const m = Math.floor(i / 60);
-        const s = i % 60;
-        tick.innerText = `${m.toString().padStart(2, '0')}:${s.toString().padStart(2, '0')}`;
-        ruler.appendChild(tick);
+    function updateRuler() {
+        ruler.innerHTML = '';
+        const totalSeconds = Math.ceil(totalTimelineDuration / 1000);
+        ruler.style.minWidth = (totalSeconds * 40) + 'px';
+        for (let i = 0; i <= totalSeconds; i++) {
+            const tick = document.createElement('div');
+            tick.className = 'tick';
+            const m = Math.floor(i / 60);
+            const s = i % 60;
+            tick.innerText = `${m.toString().padStart(2, '0')}:${s.toString().padStart(2, '0')}`;
+            ruler.appendChild(tick);
+        }
     }
 
-    // Scroll လုပ်တဲ့အခါ Ruler နဲ့ Timeline ကို Sync လုပ်ခြင်း
-    scrollContainer.onscroll = () => {
-        ruler.scrollLeft = scrollContainer.scrollLeft;
+    function addClip(file) {
+        const clip = document.createElement('div');
+        clip.className = 'video-clip';
+        const duration = file.type.startsWith('video') ? 5000 : 3000;
+        clip.style.width = (duration / 1000) * 40 + 'px';
+        totalTimelineDuration += duration;
         
-        // အလယ်က Playhead ရဲ့ အချိန်ကို တွက်ချက်ခြင်း
-        const currentTime = (scrollContainer.scrollLeft) / 40; 
-        if (videoPreview) videoPreview.currentTime = currentTime;
-    };
+        const media = document.createElement(file.type.startsWith('video') ? 'video' : 'img');
+        media.src = URL.createObjectURL(file);
+        clip.appendChild(media);
+        videoTrack.appendChild(clip);
+        updateRuler();
+    }
+
+    // Scroll sync
+    scrollContainer.onscroll = () => { ruler.scrollLeft = scrollContainer.scrollLeft; };
+    
+    document.getElementById('videoInput').addEventListener('change', (e) => Array.from(e.target.files).forEach(addClip));
+    document.getElementById('imgInput').addEventListener('change', (e) => Array.from(e.target.files).forEach(addClip));
 </script>
 </body>
 </html>
