@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>P4 - Pro Video Editor</title>
+    <title>P5 - Video Editor</title>
     <style>
         body, html { margin: 0; padding: 0; width: 100%; height: 100dvh; background: #000; color: white; font-family: sans-serif; overflow: hidden; }
         .page { display: flex; flex-direction: column; height: 100dvh; }
@@ -19,19 +19,19 @@
 
         /* Timeline Area (45%) */
         .timeline-area { height: 45dvh; background: #1a1a1a; display: flex; flex-direction: column; border-top: 1px solid #333; }
-        
-        /* Top 15% of Timeline Area */
         .tracks-wrapper { height: 33.33%; display: flex; border-bottom: 1px solid #333; }
         .side-tools { width: 70px; display: flex; flex-direction: column; justify-content: space-around; border-right: 1px solid #333; }
         .tool-box { font-size: 8px; text-align: center; color: #ccc; cursor: pointer; }
         .tracks-container { flex-grow: 1; display: flex; flex-direction: column; }
-        .track-row { height: 33.33%; border-bottom: 1px solid #222; display: flex; align-items: center; padding: 2px 5px; }
+        .track-row { height: 33.33%; border-bottom: 1px solid #222; display: flex; align-items: center; padding: 2px 5px; overflow-x: auto; }
         
-        /* Empty bottom space (30%) */
         .empty-bottom-space { height: 66.67%; background: #1a1a1a; }
 
-        /* Components */
-        .video-clip { height: 20px; width: 100px; background: #fff; color: #000; font-size: 8px; display: flex; align-items: center; padding: 0 5px; border-radius: 2px; }
+        /* Video Clip Styling */
+        .video-clip { position: relative; height: 25px; width: 80px; background: #333; border-radius: 2px; border: 1px solid #555; margin-right: 5px; flex-shrink: 0; overflow: hidden; cursor: pointer; }
+        .video-clip video, .video-clip img { width: 100%; height: 100%; object-fit: cover; }
+        .video-clip span { position: absolute; bottom: 0; left: 0; font-size: 6px; background: rgba(0,0,0,0.5); color: white; width: 100%; white-space: nowrap; overflow: hidden; }
+
         .add-btn { background: #333; color: #fff; border: none; padding: 3px 8px; font-size: 8px; cursor: pointer; border-radius: 3px; }
 
         /* Bottom Toolbar (10%) */
@@ -92,8 +92,17 @@
     function addClip(file) {
         const clip = document.createElement('div');
         clip.className = 'video-clip';
-        clip.innerText = file.name;
+        
+        const media = document.createElement(file.type.startsWith('video') ? 'video' : 'img');
+        media.src = URL.createObjectURL(file);
+        clip.appendChild(media);
+
+        const nameLabel = document.createElement('span');
+        nameLabel.innerText = file.name;
+        clip.appendChild(nameLabel);
+
         videoTrack.appendChild(clip);
+        
         clip.onclick = () => {
             const url = URL.createObjectURL(file);
             if (file.type.startsWith('video')) {
