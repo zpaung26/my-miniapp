@@ -90,6 +90,7 @@
     const imgPreview = document.getElementById('imgPreview');
 
     function addClip(file) {
+        // Timeline အတွက် Clip ဖန်တီးခြင်း
         const clip = document.createElement('div');
         clip.className = 'video-clip';
         
@@ -103,18 +104,25 @@
 
         videoTrack.appendChild(clip);
         
-        clip.onclick = () => {
-            const url = URL.createObjectURL(file);
-            if (file.type.startsWith('video')) {
-                videoPreview.src = url;
-                videoPreview.style.display = 'block';
-                imgPreview.style.display = 'none';
-            } else {
-                imgPreview.src = url;
-                imgPreview.style.display = 'block';
-                videoPreview.style.display = 'none';
-            }
-        };
+        // Import လုပ်တာနဲ့ Preview Area မှာ တစ်ပြိုင်နက်တည်း ပြသခြင်း
+        updatePreview(file);
+        
+        // နောက်မှ ပြန်နှိပ်ရင်လည်း ပေါ်စေရန်
+        clip.onclick = () => updatePreview(file);
+    }
+
+    function updatePreview(file) {
+        const url = URL.createObjectURL(file);
+        if (file.type.startsWith('video')) {
+            videoPreview.src = url;
+            videoPreview.style.display = 'block';
+            imgPreview.style.display = 'none';
+            videoPreview.play();
+        } else {
+            imgPreview.src = url;
+            imgPreview.style.display = 'block';
+            videoPreview.style.display = 'none';
+        }
     }
 
     document.getElementById('videoInput').addEventListener('change', (e) => Array.from(e.target.files).forEach(addClip));
