@@ -3,78 +3,46 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Video Subtitle Tool</title>
-    <script src="https://telegram.org/js/telegram-web-app.js"></script>
-    
+    <title>MiniApp Dashboard</title>
     <style>
-        /* CSS ပိုင်း - UI ဒီဇိုင်း */
-        body { 
-            font-family: sans-serif; 
-            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%); 
-            display: flex; justify-content: center; padding: 20px; min-height: 100vh; margin: 0;
+        body { font-family: sans-serif; background: #f0f2f5; padding: 15px; }
+        .container { max-width: 500px; margin: auto; }
+        
+        /* ခလုတ်များ အစီအစဉ် */
+        .btn-column { 
+            display: flex; flex-direction: column; gap: 10px; 
         }
-        .container { 
-            width: 100%; max-width: 400px; background: white; padding: 25px; 
-            border-radius: 20px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); 
+        
+        /* ခလုတ်ပုံစံ */
+        .btn { 
+            background: #4caf50; color: white; border: none; 
+            padding: 15px; border-radius: 8px; font-size: 16px; 
+            text-align: center; cursor: pointer; transition: 0.3s;
         }
-        h2 { text-align: center; color: #333; margin-top: 0; }
-        .credit-box { 
-            text-align: center; font-size: 20px; font-weight: bold; 
-            color: #444; margin-bottom: 20px; padding: 10px; background: #eef; border-radius: 10px;
-        }
-        label { font-weight: bold; margin-top: 10px; display: block; }
-        input, select { 
-            width: 100%; padding: 12px; margin: 8px 0 15px 0; 
-            border: 1px solid #ddd; border-radius: 10px; box-sizing: border-box; 
-        }
-        button { 
-            width: 100%; padding: 15px; margin: 8px 0; border: none; 
-            border-radius: 12px; font-size: 16px; cursor: pointer; color: white; 
-            transition: 0.3s; font-weight: bold;
-        }
-        .btn-upload { background: #28a745; }
-        .btn-subtitle { background: #007bff; }
-        .btn-close { background: #dc3545; }
-        button:hover { opacity: 0.9; }
+        .btn:hover { opacity: 0.9; }
+        
+        /* Premium/Credit ခလုတ်များ */
+        .btn-premium { background: #607d8b; }
+        .btn-shop { background: #ff9800; }
+        .credit-header { text-align: center; font-size: 20px; font-weight: bold; margin-bottom: 15px; }
     </style>
 </head>
 <body>
 
-    <div class="container">
-        <h2>Video Subtitle Tool</h2>
-        <div class="credit-box" id="credit">လက်ကျန် Credit: 10</div>
-        
-        <label>ဗီဒီယို Link ထည့်ပါ:</label>
-        <input type="text" id="videoLink" placeholder="https://youtube.com/...">
-        
-        <label>ဘာသာစကား:</label>
-        <select id="lang">
-            <option value="my">မြန်မာ</option>
-            <option value="en">English</option>
-        </select>
-        
-        <button class="btn-upload" onclick="alert('ဗီဒီယို တင်ရန် ခလုတ်ကို နှိပ်ထားသည်')">📥 ဗီဒီယို တင်ရန်</button>
-        <button class="btn-subtitle" onclick="process()">📝 စာတန်းစတင်ထိုးရန်</button>
-        <button class="btn-close" onclick="closeApp()">❌ ပိတ်ရန်</button>
+<div class="container">
+    <div class="credit-header">လက်ကျန် Credit: 10</div>
+    
+    <div class="btn-column">
+        <button class="btn">အလိုအလျောက် Recap</button>
+        <button class="btn">ဘာသာပြန် ကတ်ကား</button>
+        <button class="btn">RedNote ဒေါင်းလုပ်</button>
+        <button class="btn btn-premium">ဓာတ်ပုံဖန်တီးမည်</button>
+        <button class="btn btn-premium">SRT ဘာသာပြန်မည်</button>
+        <button class="btn">စာသားမှအသံ</button>
+        <button class="btn btn-shop">Shop</button>
+        <button class="btn">English</button>
     </div>
+</div>
 
-    <script>
-        // JavaScript ပိုင်း - လုပ်ဆောင်ချက်များ
-        let tg = window.Telegram.WebApp;
-        tg.expand();
-
-        function process() {
-            let link = document.getElementById('videoLink').value;
-            if(link === "") {
-                alert("ကျေးဇူးပြု၍ Link ထည့်ပေးပါ");
-            } else {
-                alert("စတင်လုပ်ဆောင်နေပါပြီ: " + link);
-            }
-        }
-
-        function closeApp() {
-            tg.close();
-        }
-    </script>
 </body>
 </html>
