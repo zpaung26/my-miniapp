@@ -3,12 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>P8 - Clean UI</title>
+    <title>P8 - Corrected UI</title>
     <style>
         body, html { margin: 0; padding: 0; width: 100%; height: 100dvh; background: #000; color: white; font-family: sans-serif; overflow: hidden; }
         .page { display: flex; flex-direction: column; height: 100dvh; }
 
-        /* Top & Preview Area */
         .top-button-area { height: 5dvh; background: #111; display: flex; align-items: center; justify-content: space-between; padding: 0 10px; border-bottom: 1px solid #333; }
         .action-btn { background: #555; border: none; color: white; padding: 3px 12px; border-radius: 5px; cursor: pointer; font-size: 11px; }
         .export-btn { background: #007bff; }
@@ -21,14 +20,16 @@
         #playhead::before { content: ''; position: absolute; top: 0; left: -4px; border-left: 5px solid transparent; border-right: 5px solid transparent; border-top: 8px solid white; }
         
         .tracks-wrapper { height: 33.33%; display: flex; border-bottom: 1px solid #333; }
+        .side-tools { width: 70px; display: flex; flex-direction: column; justify-content: space-around; border-right: 1px solid #333; background: #1a1a1a; z-index: 11; }
+        .tool-box { font-size: 8px; text-align: center; color: #ccc; cursor: pointer; }
+        
         .tracks-container { flex-grow: 1; display: flex; flex-direction: column; overflow-x: auto; position: relative; }
         .track-row { height: 33.33%; border-bottom: 1px solid #222; display: flex; align-items: center; padding: 2px 5px; min-width: 800px; }
         
-        /* Video/Photo Clip Styling */
         .video-clip { position: relative; height: 25px; background: #333; border-radius: 2px; border: 1px solid #555; margin-right: 5px; flex-shrink: 0; overflow: hidden; cursor: pointer; }
         .video-clip video, .video-clip img { width: 100%; height: 100%; object-fit: cover; }
         
-        /* Filename ဖျောက်ရန် (Photo & Video နှစ်မျိုးလုံးအတွက်) */
+        /* Filename ဖျောက်ရန် (Toolbox တွေကို မထိပါ) */
         .video-clip span { display: none; }
 
         .add-btn { background: #333; color: #fff; border: none; padding: 3px 8px; font-size: 8px; cursor: pointer; border-radius: 3px; }
@@ -59,6 +60,11 @@
     <div class="timeline-area">
         <div id="playhead"></div>
         <div class="tracks-wrapper">
+            <div class="side-tools">
+                <div class="tool-box">🔇<br>Mute</div>
+                <div class="tool-box">✂️<br>AI Clip</div>
+                <div class="tool-box">📝<br>Cover</div>
+            </div>
             <div class="tracks-container">
                 <div class="track-row" id="videoTrack"></div>
                 <div class="track-row"><button class="add-btn">+ Add audio</button></div>
@@ -84,8 +90,6 @@
     function addClip(file) {
         const clip = document.createElement('div');
         clip.className = 'video-clip';
-        
-        // Duration Logic: ဓာတ်ပုံဆိုရင် 3s, ဗီဒီယိုဆိုရင် 5s
         const duration = file.type.startsWith('video') ? 5000 : 3000;
         clip.style.width = (duration / 1000) * 40 + 'px'; 
 
@@ -93,14 +97,13 @@
         media.src = URL.createObjectURL(file);
         clip.appendChild(media);
 
-        // Name label ထည့်ထားဆဲဖြစ်သော်လည်း CSS က display: none လုပ်ထားသည်
+        // Filename ဖျောက်ထားပေမယ့် လိုအပ်ရင် ပြန်ပေါ်ဖို့ code ထည့်ထားဆဲပါ
         const nameLabel = document.createElement('span');
         nameLabel.innerText = file.name;
         clip.appendChild(nameLabel);
 
         videoTrack.appendChild(clip);
         updatePreview(file);
-        
         clip.onclick = () => updatePreview(file);
     }
 
