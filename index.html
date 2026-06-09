@@ -59,6 +59,7 @@
         <div class="lang-wrapper">
             <div id="confirmMsg" class="confirm-msg" onclick="applyLanguageChange()">🇲🇲 မြန်မာသို့ ပြောင်းမည်</div>
             <button class="btn" id="langBtn" onclick="showConfirm()">🇬🇧 English</button>
+            <button class="btn btn-premium" id="btn1" onclick="showVideos()">English/China Videos</button>
         </div>
     </div>
 </div>
@@ -94,8 +95,25 @@
             ids.forEach((id, index) => document.getElementById(id).innerText = enTexts[index]);
             isEnglish = true;
         }
+        function showVideos() {
+            document.getElementById("videoModal").style.display = "flex";
+        }
+        function closeModal() {
+            document.getElementById("videoModal").style.display = "none";
+        }  
     }
 </script>
-
+    
+<div id="videoModal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.8); z-index:100; justify-content:center; align-items:center;">
+    <div style="background:white; padding:20px; border-radius:12px; width:90%; max-width:400px; text-align:center;">
+        <h3>Video List</h3>
+        <ul style="list-style:none; padding:0;">
+            <li><a href="https://youtube.com/..." target="_blank">Video 1</a></li>
+            <li><a href="https://youtube.com/..." target="_blank">Video 2</a></li>
+        </ul>
+        <button onclick="closeModal()" style="margin-top:10px; padding:10px 20px;">ပိတ်မည်</button>
+    </div>
+</div>
+    
 </body>
 </html>
