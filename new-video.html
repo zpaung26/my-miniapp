@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>P6 - Video Editor</title>
+    <title>P8 - Video Editor</title>
     <style>
         body, html { margin: 0; padding: 0; width: 100%; height: 100dvh; background: #000; color: white; font-family: sans-serif; overflow: hidden; }
         .page { display: flex; flex-direction: column; height: 100dvh; }
@@ -19,8 +19,6 @@
 
         /* Timeline Area (45%) */
         .timeline-area { height: 45dvh; background: #1a1a1a; display: flex; flex-direction: column; border-top: 1px solid #333; position: relative; }
-        
-        /* White Playhead */
         #playhead { position: absolute; left: 50%; top: 0; bottom: 0; width: 2px; background: white; z-index: 10; pointer-events: none; }
         #playhead::before { content: ''; position: absolute; top: 0; left: -4px; border-left: 5px solid transparent; border-right: 5px solid transparent; border-top: 8px solid white; }
         
@@ -33,7 +31,7 @@
         .empty-bottom-space { height: 66.67%; background: #1a1a1a; }
 
         /* Video Clip Styling */
-        .video-clip { position: relative; height: 25px; width: 80px; background: #333; border-radius: 2px; border: 1px solid #555; margin-right: 5px; flex-shrink: 0; overflow: hidden; cursor: pointer; }
+        .video-clip { position: relative; height: 25px; background: #333; border-radius: 2px; border: 1px solid #555; margin-right: 5px; flex-shrink: 0; overflow: hidden; cursor: pointer; }
         .video-clip video, .video-clip img { width: 100%; height: 100%; object-fit: cover; }
         .video-clip span { position: absolute; bottom: 0; left: 0; font-size: 6px; background: rgba(0,0,0,0.5); color: white; width: 100%; white-space: nowrap; overflow: hidden; }
 
@@ -65,7 +63,8 @@
     </div>
 
     <div class="timeline-area">
-        <div id="playhead"></div> <div class="tracks-wrapper">
+        <div id="playhead"></div>
+        <div class="tracks-wrapper">
             <div class="side-tools">
                 <div class="tool-box">🔇<br>Mute</div>
                 <div class="tool-box">✂️<br>AI Clip</div>
@@ -98,6 +97,10 @@
         const clip = document.createElement('div');
         clip.className = 'video-clip';
         
+        // Duration Logic: ဓာတ်ပုံဆိုရင် 3s, ဗီဒီယိုဆိုရင် လက်ရှိအရှည် (ဒီမှာတော့ 5s လို့ ယူဆထားပါတယ်)
+        const duration = file.type.startsWith('video') ? 5000 : 3000;
+        clip.style.width = (duration / 1000) * 40 + 'px'; 
+
         const media = document.createElement(file.type.startsWith('video') ? 'video' : 'img');
         media.src = URL.createObjectURL(file);
         clip.appendChild(media);
