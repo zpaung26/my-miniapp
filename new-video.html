@@ -2,22 +2,29 @@
 <html lang="my">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Video Editor</title>
     <style>
-        body { font-family: sans-serif; background: #1a1a1a; margin: 0; padding: 0; color: white; }
+        /* CSS အပြည့်အစုံ */
+        body { font-family: sans-serif; background: #000; margin: 0; padding: 0; color: white; }
         
-        /* ၁။ Video Preview Area (Screen တစ်ဝက်) */
+        /* Screen တစ်ဝက် Preview Area */
         .preview-container {
-            height: 50vh; /* Screen တစ်ဝက် */
+            height: 50vh; 
+            width: 100%;
             display: flex;
             justify-content: center;
             align-items: center;
             background: #000;
             position: relative;
         }
-        video, img { max-width: 100%; max-height: 100%; object-fit: contain; }
 
-        /* ၂။ Import Button ပုံစံ */
+        video, img { 
+            width: 100%; 
+            height: 100%; 
+            object-fit: contain; 
+        }
+
         .import-btn {
             padding: 15px 30px;
             background: #333;
@@ -33,15 +40,27 @@
             position: fixed;
             bottom: 0;
             width: 100%;
-            height: 70px;
-            background: #222;
+            height: 50vh; /* ကျန်တဲ့တစ်ဝက်ကို Toolbar နေရာအဖြစ် သုံးခြင်း */
+            background: #1a1a1a;
             display: flex;
+            flex-wrap: wrap;
             justify-content: space-around;
             align-items: center;
-            box-shadow: 0 -2px 10px rgba(0,0,0,0.3);
+            border-top: 1px solid #333;
+            padding-top: 20px;
         }
-        .tool-item { display: flex; flex-direction: column; align-items: center; font-size: 12px; cursor: pointer; }
-        .tool-item span { font-size: 20px; margin-bottom: 2px; }
+        
+        .tool-item { 
+            width: 20%;
+            display: flex; 
+            flex-direction: column; 
+            align-items: center; 
+            font-size: 12px; 
+            color: #fff; 
+            cursor: pointer; 
+            margin-bottom: 20px;
+        }
+        .tool-item span { font-size: 24px; margin-bottom: 5px; }
     </style>
 </head>
 <body>
@@ -62,15 +81,19 @@
         <div class="tool-item"><span>📝</span>Text</div>
         <div class="tool-item"><span>✨</span>Effects</div>
         <div class="tool-item"><span>🖼️</span>Overlay</div>
+        <div class="tool-item"><span>🎞️</span>Ratio</div>
+        <div class="tool-item"><span>🎨</span>Filters</div>
+        <div class="tool-item"><span>⚙️</span>Adjust</div>
+        <div class="tool-item"><span>🧩</span>Stickers</div>
+        <div class="tool-item"><span>🎙️</span>Record</div>
     </div>
 
     <script>
+        // JavaScript - ဖိုင်ရွေးပြီး Preview ပြခြင်း
         function loadFile(event) {
-            const previewArea = document.getElementById('previewArea');
             const file = event.target.files[0];
             const reader = new FileReader();
 
-            // Import button ကို ဖျောက်ပြီး Preview ပြမယ်
             document.querySelector('.import-btn').style.display = 'none';
 
             reader.onload = function(e) {
