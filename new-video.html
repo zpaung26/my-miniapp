@@ -3,34 +3,41 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>P4 - Video Editor</title>
+    <title>P4 - Pro Video Editor</title>
     <style>
         body, html { margin: 0; padding: 0; width: 100%; height: 100dvh; background: #000; color: white; font-family: sans-serif; overflow: hidden; }
         .page { display: flex; flex-direction: column; height: 100dvh; }
 
         /* Top Button Area (5%) */
         .top-button-area { height: 5dvh; background: #111; display: flex; align-items: center; justify-content: space-between; padding: 0 10px; border-bottom: 1px solid #333; }
-        .action-btn { background: #555; border: none; color: white; padding: 3px 12px; border-radius: 5px; cursor: pointer; font-size: 11px; box-shadow: 0 3px 0 #222; transition: all 0.1s; }
-        .action-btn:active { transform: translateY(3px); box-shadow: 0 0 0 #222; }
-        .export-btn { background: #007bff; box-shadow: 0 3px 0 #004a99; }
+        .action-btn { background: #555; border: none; color: white; padding: 3px 12px; border-radius: 5px; cursor: pointer; font-size: 11px; }
+        .export-btn { background: #007bff; }
 
-        /* Preview Area (45%) */
-        .preview-area { height: 45dvh; background: #000; display: flex; justify-content: center; align-items: center; position: relative; }
+        /* Preview Area (40%) */
+        .preview-area { height: 40dvh; background: #000; display: flex; justify-content: center; align-items: center; }
         #videoPreview, #imgPreview { max-width: 100%; max-height: 100%; object-fit: contain; display: none; }
 
         /* Timeline Area (45%) */
-        .timeline-area { height: 45dvh; background: #1a1a1a; display: flex; border-top: 1px solid #333; overflow: hidden; }
-        .side-tools { width: 80px; display: flex; flex-direction: column; justify-content: center; align-items: center; border-right: 1px solid #333; gap: 15px; }
-        .tool-box { font-size: 9px; text-align: center; color: #ccc; cursor: pointer; }
-        .tracks-container { flex-grow: 1; overflow-x: auto; display: flex; flex-direction: column; justify-content: center; }
-        .track-row { height: 40px; border-bottom: 1px solid #333; display: flex; align-items: center; padding: 5px; }
-        .video-clip { height: 35px; width: 120px; background: #fff; border-radius: 2px; border: 1px solid #888; color: #000; font-size: 9px; display: flex; align-items: center; padding-left: 5px; overflow: hidden; white-space: nowrap; }
-        .add-btn { background: #333; color: #fff; border: none; padding: 4px 8px; font-size: 9px; cursor: pointer; margin-left: 5px; border-radius: 3px; }
+        .timeline-area { height: 45dvh; background: #1a1a1a; display: flex; flex-direction: column; border-top: 1px solid #333; }
+        
+        /* Top 15% of Timeline Area */
+        .tracks-wrapper { height: 33.33%; display: flex; border-bottom: 1px solid #333; }
+        .side-tools { width: 70px; display: flex; flex-direction: column; justify-content: space-around; border-right: 1px solid #333; }
+        .tool-box { font-size: 8px; text-align: center; color: #ccc; cursor: pointer; }
+        .tracks-container { flex-grow: 1; display: flex; flex-direction: column; }
+        .track-row { height: 33.33%; border-bottom: 1px solid #222; display: flex; align-items: center; padding: 2px 5px; }
+        
+        /* Empty bottom space (30%) */
+        .empty-bottom-space { height: 66.67%; background: #1a1a1a; }
 
-        /* Bottom Toolbar (5%) */
-        .bottom-toolbar { height: 5dvh; background: #000; display: flex; justify-content: space-around; align-items: center; border-top: 1px solid #333; font-size: 9px; color: #ccc; text-align: center; }
-        .tool-item { cursor: pointer; }
-        .tool-item span { font-size: 16px; display: block; }
+        /* Components */
+        .video-clip { height: 20px; width: 100px; background: #fff; color: #000; font-size: 8px; display: flex; align-items: center; padding: 0 5px; border-radius: 2px; }
+        .add-btn { background: #333; color: #fff; border: none; padding: 3px 8px; font-size: 8px; cursor: pointer; border-radius: 3px; }
+
+        /* Bottom Toolbar (10%) */
+        .bottom-toolbar { height: 10dvh; background: #000; display: flex; justify-content: space-around; align-items: center; border-top: 1px solid #333; font-size: 9px; color: #ccc; }
+        .tool-item { text-align: center; cursor: pointer; }
+        .tool-item span { font-size: 18px; display: block; }
     </style>
 </head>
 <body>
@@ -38,7 +45,7 @@
 <div class="page">
     <div class="top-button-area">
         <button class="action-btn" onclick="window.history.back()">✕</button>
-        <div style="display: flex; gap: 8px;">
+        <div style="display: flex; gap: 5px;">
             <button class="action-btn" onclick="document.getElementById('videoInput').click()">Video</button>
             <button class="action-btn" onclick="document.getElementById('imgInput').click()">Photo</button>
             <button class="action-btn export-btn">Export</button>
@@ -53,16 +60,19 @@
     </div>
 
     <div class="timeline-area">
-        <div class="side-tools">
-            <div class="tool-box"><span>🔇</span><br>Mute</div>
-            <div class="tool-box"><span>✂️</span><br>AI Clip</div>
-            <div class="tool-box"><span>📝</span><br>Cover</div>
+        <div class="tracks-wrapper">
+            <div class="side-tools">
+                <div class="tool-box">🔇<br>Mute</div>
+                <div class="tool-box">✂️<br>AI Clip</div>
+                <div class="tool-box">📝<br>Cover</div>
+            </div>
+            <div class="tracks-container">
+                <div class="track-row" id="videoTrack"></div>
+                <div class="track-row"><button class="add-btn">+ Add audio</button></div>
+                <div class="track-row"><button class="add-btn">+ Add text</button></div>
+            </div>
         </div>
-        <div class="tracks-container">
-            <div class="track-row" id="videoTrack"></div>
-            <div class="track-row"><button class="add-btn">+ Add audio</button></div>
-            <div class="track-row"><button class="add-btn">+ Add text</button></div>
-        </div>
+        <div class="empty-bottom-space"></div>
     </div>
 
     <div class="bottom-toolbar">
