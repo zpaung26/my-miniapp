@@ -2,9 +2,10 @@
 <html lang="my">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>P10 - Integrated Editor</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>P10 - Integrated Responsive Editor</title>
     <style>
+        :root { --side-tool-width: clamp(80px, 15vw, 180px); }
         body, html { margin: 0; padding: 0; width: 100%; height: 100dvh; background: #000; color: white; font-family: sans-serif; overflow: hidden; }
         .page { display: flex; flex-direction: column; height: 100dvh; }
 
@@ -20,16 +21,16 @@
         /* Timeline Area */
         .timeline-area { height: 45dvh; background: #1a1a1a; border-top: 1px solid #333; position: relative; display: flex; flex-direction: column; }
         
-        /* Side Tools (Fixed/Sticky) */
-        .side-tools { width: 70px; background: #1a1a1a; z-index: 100; position: sticky; left: 0; border-right: 1px solid #333; display: flex; flex-direction: column; justify-content: space-around; }
-        .tool-box { font-size: 8px; text-align: center; color: #ccc; cursor: pointer; }
+        /* Responsive Side Tools */
+        .side-tools { width: var(--side-tool-width); background: #1a1a1a; z-index: 100; position: sticky; left: 0; border-right: 1px solid #333; display: flex; flex-direction: column; justify-content: space-around; }
+        .tool-box { font-size: 10px; text-align: center; color: #ccc; cursor: pointer; }
         
         /* Ruler & Playhead */
-        #timelineRuler { height: 25px; background: #222; display: flex; align-items: flex-end; padding-left: 70px; color: #888; font-size: 10px; overflow-x: hidden; border-bottom: 1px solid #333; }
+        #timelineRuler { height: 25px; background: #222; display: flex; align-items: flex-end; padding-left: var(--side-tool-width); color: #888; font-size: 10px; overflow-x: hidden; border-bottom: 1px solid #333; }
         .tick { width: 40px; flex-shrink: 0; border-left: 1px solid #555; padding-left: 2px; }
         #playhead { position: absolute; left: 50vw; top: 25px; bottom: 0; width: 2px; background: #ff4757; z-index: 20; pointer-events: none; }
         
-        /* Timeline Scrolling Container */
+        /* Scroll Container */
         .tracks-wrapper { height: 33.33%; display: flex; }
         .tracks-container { flex-grow: 1; overflow-x: auto; position: relative; padding-left: 50vw; padding-right: 50vw; }
         .track-row { height: 33.33%; border-bottom: 1px solid #222; display: flex; align-items: center; padding: 2px 5px; min-width: max-content; }
