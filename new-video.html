@@ -3,33 +3,28 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>p1 - Advanced Editor</title>
+    <title>P2 - Advanced Import</title>
     <style>
         body, html { margin: 0; padding: 0; width: 100%; height: 100dvh; background: #000; color: white; font-family: sans-serif; overflow: hidden; }
         .page { display: flex; flex-direction: column; height: 100dvh; }
 
-        /* Preview Area */
         .preview-area { height: 40dvh; background: #000; display: flex; justify-content: center; align-items: center; position: relative; }
         #previewVideo, #previewImg { max-width: 100%; max-height: 100%; object-fit: contain; display: none; }
         
-        /* Top UI */
         .top-ui { position: absolute; top: 10px; left: 10px; right: 10px; display: flex; justify-content: space-between; z-index: 10; }
         .action-btn { background: #333; border: none; color: white; padding: 6px 15px; border-radius: 6px; cursor: pointer; font-size: 13px; box-shadow: 0 4px 0 #111; }
         .action-btn:active { transform: translateY(4px); box-shadow: 0 0 0 #111; }
 
-        /* Media Selection Tab */
-        .tab-bar { display: flex; justify-content: center; gap: 40px; padding: 10px; background: #000; border-top: 1px solid #333; }
-        .tab-item { cursor: pointer; color: #888; font-weight: bold; padding: 5px; }
-        .tab-item.active { color: #00d4ff; border-bottom: 2px solid #00d4ff; }
+        /* Media Tabs - အသစ်ထည့်ထားသည် */
+        .tab-container { display: flex; justify-content: center; background: #1a1a1a; padding: 10px; border-top: 1px solid #333; }
+        .tab-btn { color: #888; margin: 0 20px; cursor: pointer; font-weight: bold; }
+        .tab-btn.active { color: #00d4ff; border-bottom: 2px solid #00d4ff; }
 
-        /* Media Grid (Storage View) */
-        .media-grid { flex: 1; display: grid; grid-template-columns: repeat(3, 1fr); gap: 5px; padding: 5px; overflow-y: auto; background: #1a1a1a; }
-        .media-item { width: 100%; aspect-ratio: 1; background: #222; border: 1px solid #333; cursor: pointer; }
-        
-        /* Toolbar */
+        .timeline-area { height: 50dvh; background: #1a1a1a; border-top: 1px solid #333; overflow-y: auto; display: grid; grid-template-columns: repeat(4, 1fr); gap: 5px; padding: 5px; }
+        .media-thumb { width: 100%; aspect-ratio: 1; background: #333; cursor: pointer; object-fit: cover; }
+
         .toolbar { height: 10dvh; background: #000; display: flex; justify-content: space-around; align-items: center; border-top: 1px solid #333; }
         .tool-item { display: flex; flex-direction: column; align-items: center; font-size: 9px; color: #ccc; cursor: pointer; }
-        .tool-item span { font-size: 16px; margin-bottom: 2px; }
     </style>
 </head>
 <body>
@@ -45,19 +40,17 @@
         <input type="file" id="fileInput" style="display:none;" accept="image/*,video/*" multiple>
     </div>
 
-    <div class="tab-bar">
-        <div class="tab-item active" onclick="switchTab(this, 'video')">Videos</div>
-        <div class="tab-item" onclick="switchTab(this, 'image')">Photos</div>
+    <div class="tab-container">
+        <div class="tab-btn active" onclick="filterMedia('video')">Videos</div>
+        <div class="tab-btn" onclick="filterMedia('image')">Photos</div>
     </div>
 
-    <div class="media-grid" id="mediaGrid"></div>
+    <div class="timeline-area" id="mediaGrid"></div>
 
     <div class="toolbar">
         <div class="tool-item"><span>✂️</span>Edit</div>
         <div class="tool-item"><span>🎵</span>Audio</div>
         <div class="tool-item"><span>📝</span>Text</div>
-        <div class="tool-item"><span>✨</span>Effects</div>
-        <div class="tool-item"><span>🖼️</span>Overlay</div>
     </div>
 </div>
 
@@ -70,37 +63,30 @@
 
     fileInput.addEventListener('change', function(e) {
         allFiles = Array.from(e.target.files);
-        renderMedia('video'); // Default view
+        filterMedia('video'); // default view
     });
 
-    function renderMedia(type) {
+    function filterMedia(type) {
+        document.querySelectorAll('.tab-btn').forEach(b => b.classList.toggle('active', b.innerText.toLowerCase().includes(type)));
         mediaGrid.innerHTML = '';
         allFiles.filter(f => f.type.startsWith(type)).forEach(file => {
             const url = URL.createObjectURL(file);
-            const div = document.createElement('div');
-            div.className = 'media-item';
-            div.style.background = `url(${url}) center/cover`;
-            div.onclick = () => showPreview(url, file.type);
-            mediaGrid.appendChild(div);
+            const img = document.createElement('img');
+            img.className = 'media-thumb';
+            img.src = url;
+            img.onclick = () => {
+                if (file.type.startsWith('video')) {
+                    previewVideo.src = url;
+                    previewVideo.style.display = 'block';
+                    previewImg.style.display = 'none';
+                } else {
+                    previewImg.src = url;
+                    previewImg.style.display = 'block';
+                    previewVideo.style.display = 'none';
+                }
+            };
+            mediaGrid.appendChild(img);
         });
-    }
-
-    function showPreview(url, type) {
-        if (type.startsWith('video')) {
-            previewVideo.src = url;
-            previewVideo.style.display = 'block';
-            previewImg.style.display = 'none';
-        } else {
-            previewImg.src = url;
-            previewImg.style.display = 'block';
-            previewVideo.style.display = 'none';
-        }
-    }
-
-    function switchTab(el, type) {
-        document.querySelectorAll('.tab-item').forEach(i => i.classList.remove('active'));
-        el.classList.add('active');
-        renderMedia(type);
     }
 </script>
 </body>
