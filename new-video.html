@@ -3,91 +3,76 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>P2 - Advanced Import</title>
+    <title>Video Editor Pro</title>
     <style>
-        body, html { margin: 0; padding: 0; width: 100%; height: 100dvh; background: #000; color: white; font-family: sans-serif; overflow: hidden; }
-        .page { display: flex; flex-direction: column; height: 100dvh; }
+        body, html { margin: 0; padding: 0; width: 100%; height: 100dvh; background: #000; color: white; overflow: hidden; font-family: sans-serif; }
+        .page { display: flex; flex-direction: column; height: 100dvh; width: 100%; }
 
+        /* Preview (40%) */
         .preview-area { height: 40dvh; background: #000; display: flex; justify-content: center; align-items: center; position: relative; }
-        #previewVideo, #previewImg { max-width: 100%; max-height: 100%; object-fit: contain; display: none; }
+        #videoPreview { max-width: 100%; max-height: 100%; object-fit: contain; display: none; }
         
+        /* Top Navigation */
         .top-ui { position: absolute; top: 10px; left: 10px; right: 10px; display: flex; justify-content: space-between; z-index: 10; }
-        .action-btn { background: #333; border: none; color: white; padding: 6px 15px; border-radius: 6px; cursor: pointer; font-size: 13px; box-shadow: 0 4px 0 #111; }
-        .action-btn:active { transform: translateY(4px); box-shadow: 0 0 0 #111; }
+        .action-btn { background: rgba(0,0,0,0.5); border: 1px solid #444; color: white; padding: 6px 15px; border-radius: 20px; cursor: pointer; font-size: 13px; }
 
-        /* Media Tabs - အသစ်ထည့်ထားသည် */
-        .tab-container { display: flex; justify-content: center; background: #1a1a1a; padding: 10px; border-top: 1px solid #333; }
-        .tab-btn { color: #888; margin: 0 20px; cursor: pointer; font-weight: bold; }
-        .tab-btn.active { color: #00d4ff; border-bottom: 2px solid #00d4ff; }
+        /* Timeline (50%) */
+        .timeline-area { height: 50dvh; background: #1a1a1a; border-top: 1px solid #333; position: relative; }
 
-        .timeline-area { height: 50dvh; background: #1a1a1a; border-top: 1px solid #333; overflow-y: auto; display: grid; grid-template-columns: repeat(4, 1fr); gap: 5px; padding: 5px; }
-        .media-thumb { width: 100%; aspect-ratio: 1; background: #333; cursor: pointer; object-fit: cover; }
-
-        .toolbar { height: 10dvh; background: #000; display: flex; justify-content: space-around; align-items: center; border-top: 1px solid #333; }
-        .tool-item { display: flex; flex-direction: column; align-items: center; font-size: 9px; color: #ccc; cursor: pointer; }
+        /* Toolbar (10%) */
+        .toolbar { height: 10dvh; background: #000; display: flex; justify-content: space-around; align-items: center; border-top: 1px solid #333; padding-bottom: env(safe-area-inset-bottom); }
+        .tool-item { display: flex; flex-direction: column; align-items: center; font-size: 9px; cursor: pointer; color: #ccc; }
+        .tool-item span { font-size: 16px; margin-bottom: 2px; }
     </style>
 </head>
 <body>
 
 <div class="page">
-    <div class="preview-area">
+    <div class="preview-area" id="previewArea">
         <div class="top-ui">
             <button class="action-btn" onclick="window.history.back()">✕</button>
-            <button class="action-btn" onclick="document.getElementById('fileInput').click()">Import</button>
+            <button class="action-btn" style="background:#007bff; border:none;">Export</button>
         </div>
-        <video id="previewVideo" controls></video>
-        <img id="previewImg">
-        <input type="file" id="fileInput" style="display:none;" accept="image/*,video/*" multiple>
+        
+        <video id="videoPreview" controls></video>
+        
+        <button id="importBtn" onclick="document.getElementById('fileInput').click()" 
+                style="background:#333; border:none; color:white; padding:15px 30px; cursor:pointer; border-radius:8px;">
+            Import Video
+        </button>
+        <input type="file" id="fileInput" style="display:none;" accept="video/*">
     </div>
 
-    <div class="tab-container">
-        <div class="tab-btn active" onclick="filterMedia('video')">Videos</div>
-        <div class="tab-btn" onclick="filterMedia('image')">Photos</div>
-    </div>
-
-    <div class="timeline-area" id="mediaGrid"></div>
+    <div class="timeline-area">
+        </div>
 
     <div class="toolbar">
         <div class="tool-item"><span>✂️</span>Edit</div>
         <div class="tool-item"><span>🎵</span>Audio</div>
         <div class="tool-item"><span>📝</span>Text</div>
+        <div class="tool-item"><span>✨</span>Effects</div>
+        <div class="tool-item"><span>🖼️</span>Overlay</div>
     </div>
 </div>
 
 <script>
     const fileInput = document.getElementById('fileInput');
-    const mediaGrid = document.getElementById('mediaGrid');
-    const previewVideo = document.getElementById('previewVideo');
-    const previewImg = document.getElementById('previewImg');
-    let allFiles = [];
+    const videoPreview = document.getElementById('videoPreview');
+    const importBtn = document.getElementById('importBtn');
 
-    fileInput.addEventListener('change', function(e) {
-        allFiles = Array.from(e.target.files);
-        filterMedia('video'); // default view
+    fileInput.addEventListener('change', function(event) {
+        const file = event.target.files[0];
+        if (file) {
+            // Video အလုပ်လုပ်အောင်လုပ်ခြင်း
+            const videoURL = URL.createObjectURL(file);
+            videoPreview.src = videoURL;
+            videoPreview.style.display = 'block';
+            
+            // Import ခလုတ်ဖျောက်ခြင်း
+            importBtn.style.display = 'none';
+        }
     });
-
-    function filterMedia(type) {
-        document.querySelectorAll('.tab-btn').forEach(b => b.classList.toggle('active', b.innerText.toLowerCase().includes(type)));
-        mediaGrid.innerHTML = '';
-        allFiles.filter(f => f.type.startsWith(type)).forEach(file => {
-            const url = URL.createObjectURL(file);
-            const img = document.createElement('img');
-            img.className = 'media-thumb';
-            img.src = url;
-            img.onclick = () => {
-                if (file.type.startsWith('video')) {
-                    previewVideo.src = url;
-                    previewVideo.style.display = 'block';
-                    previewImg.style.display = 'none';
-                } else {
-                    previewImg.src = url;
-                    previewImg.style.display = 'block';
-                    previewVideo.style.display = 'none';
-                }
-            };
-            mediaGrid.appendChild(img);
-        });
-    }
 </script>
+
 </body>
 </html>
