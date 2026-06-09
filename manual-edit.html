@@ -6,7 +6,25 @@
     <title>Manual Edit Videos</title>
     <style>
         body { font-family: sans-serif; padding: 20px; background: #f0f2f5; }
-        .back-btn { display: inline-block; padding: 10px 20px; background: #333; color: white; text-decoration: none; border-radius: 8px; margin-bottom: 20px; }
+        .back-btn { 
+            display: inline-block; 
+            padding: 12px 24px; 
+            background: #444; 
+            color: white; 
+            text-decoration: none; 
+            border-radius: 12px; 
+            margin-bottom: 25px;
+            font-weight: bold;
+            /* 3D Effect */
+            border-bottom: 5px solid #222;
+            transition: 0.1s;
+        }
+
+        .back-btn:active { 
+            transform: translateY(4px); 
+            border-bottom: none; 
+        }
+
         
         .btn-container {
             display: grid;
