@@ -3,74 +3,49 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Video Editor</title>
+    <title>Responsive Video Editor</title>
     <style>
-        /* CSS အပြည့်အစုံ */
-        body { font-family: sans-serif; background: #000; margin: 0; padding: 0; color: white; }
-        
-        /* Screen တစ်ဝက် Preview Area */
+        body { margin: 0; padding: 0; background: #000; color: white; display: flex; flex-direction: column; height: 100vh; overflow: hidden; }
+
+        /* Preview Area: အမြဲတမ်း Screen တစ်ဝက် */
         .preview-container {
-            height: 50vh; 
+            height: 50vh;
             width: 100%;
+            background: #000;
             display: flex;
             justify-content: center;
             align-items: center;
-            background: #000;
             position: relative;
         }
 
-        video, img { 
-            width: 100%; 
-            height: 100%; 
-            object-fit: contain; 
+        /* Video Original Ratio အတိုင်းပေါ်စေရန် */
+        video, img {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain; /* ဒါက original ratio မပျက်အောင်လုပ်ပေးတာပါ */
         }
 
-        .import-btn {
-            padding: 15px 30px;
-            background: #333;
-            border: 2px dashed #555;
-            color: #ccc;
-            border-radius: 10px;
-            cursor: pointer;
-            font-size: 16px;
-        }
+        .import-btn { padding: 15px 30px; background: #333; border: 2px dashed #555; color: #ccc; border-radius: 10px; cursor: pointer; }
 
-        /* အောက်ခြေ Toolbar */
+        /* Toolbar Area: ကျန်တဲ့ တစ်ဝက် */
         .toolbar {
-            position: fixed;
-            bottom: 0;
-            width: 100%;
-            height: 50vh; /* ကျန်တဲ့တစ်ဝက်ကို Toolbar နေရာအဖြစ် သုံးခြင်း */
+            height: 50vh;
             background: #1a1a1a;
             display: flex;
             flex-wrap: wrap;
-            justify-content: space-around;
-            align-items: center;
-            border-top: 1px solid #333;
-            padding-top: 20px;
+            align-content: flex-start;
+            padding: 10px;
+            overflow-y: auto;
         }
         
-        .tool-item { 
-            width: 20%;
-            display: flex; 
-            flex-direction: column; 
-            align-items: center; 
-            font-size: 12px; 
-            color: #fff; 
-            cursor: pointer; 
-            margin-bottom: 20px;
-        }
-        .tool-item span { font-size: 24px; margin-bottom: 5px; }
+        .tool-item { width: 20%; display: flex; flex-direction: column; align-items: center; padding: 10px 0; font-size: 12px; cursor: pointer; }
     </style>
 </head>
 <body>
 
     <div class="preview-container" id="previewArea">
-        <button class="import-btn" onclick="document.getElementById('fileInput').click()">
-            ➕ Import Video/Photo
-        </button>
+        <button class="import-btn" onclick="document.getElementById('fileInput').click()">Import Video/Photo</button>
         <input type="file" id="fileInput" style="display: none;" accept="video/*, image/*" onchange="loadFile(event)">
-        
         <video id="videoPreview" controls style="display: none;"></video>
         <img id="imagePreview" style="display: none;">
     </div>
@@ -81,21 +56,13 @@
         <div class="tool-item"><span>📝</span>Text</div>
         <div class="tool-item"><span>✨</span>Effects</div>
         <div class="tool-item"><span>🖼️</span>Overlay</div>
-        <div class="tool-item"><span>🎞️</span>Ratio</div>
-        <div class="tool-item"><span>🎨</span>Filters</div>
-        <div class="tool-item"><span>⚙️</span>Adjust</div>
-        <div class="tool-item"><span>🧩</span>Stickers</div>
-        <div class="tool-item"><span>🎙️</span>Record</div>
     </div>
 
     <script>
-        // JavaScript - ဖိုင်ရွေးပြီး Preview ပြခြင်း
         function loadFile(event) {
             const file = event.target.files[0];
             const reader = new FileReader();
-
             document.querySelector('.import-btn').style.display = 'none';
-
             reader.onload = function(e) {
                 if (file.type.startsWith('video/')) {
                     const video = document.getElementById('videoPreview');
