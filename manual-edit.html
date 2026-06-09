@@ -6,32 +6,31 @@
     <title>Manual Edit Videos</title>
     <style>
         body { font-family: sans-serif; padding: 20px; background: #f0f2f5; }
-        .back-btn { 
-            display: inline-block; 
-            padding: 12px 24px; 
-            background: #444; 
-            color: white; 
-            text-decoration: none; 
-            border-radius: 12px; 
+        .container { max-width: 450px; margin: auto; }
+
+        /* 3D Title */
+        .page-title {
+            text-align: center;
+            color: #333;
+            font-size: 32px;
             margin-bottom: 25px;
-            font-weight: bold;
-            /* 3D Effect */
-            border-bottom: 5px solid #222;
-            transition: 0.1s;
+            text-shadow: 2px 2px 0px #fff, 4px 4px 0px rgba(0, 0, 0, 0.2);
+            letter-spacing: 1px;
         }
 
-        .back-btn:active { 
-            transform: translateY(4px); 
-            border-bottom: none; 
+        /* Back Button 3D */
+        .back-btn { 
+            display: inline-block; padding: 8px 16px; 
+            background: #444; color: white; text-decoration: none; 
+            border-radius: 8px; margin-bottom: 15px; font-weight: bold;
+            font-size: 14px; border-bottom: 3px solid #222; transition: 0.1s;
         }
-
+        .back-btn:active { transform: translateY(2px); border-bottom: none; }
         
         .btn-container {
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 15px;
-            max-width: 450px;
-            margin: auto;
         }
 
         .btn-manual {
@@ -47,42 +46,39 @@
             cursor: pointer;
             transition: 0.1s;
             font-size: 14px;
-            /* 3D Effect */
             box-shadow: 0 4px 6px rgba(0,0,0,0.1);
         }
 
-        /* 3D အောက်ခံ Border */
+        /* Button Colors */
         .new-video { background: #4caf50; border-bottom: 6px solid #388e3c; }
         .tutorial  { background: #2196f3; border-bottom: 6px solid #1976d2; }
         .save      { background: #ff9800; border-bottom: 6px solid #e65100; }
         .history   { background: #9c27b0; border-bottom: 6px solid #7b1fa2; }
 
-        /* နှိပ်လိုက်ရင် ဖြစ်မယ့် 3D Effect */
-        .btn-manual:active { 
-            transform: translateY(4px); 
-            border-bottom: none; 
-            box-shadow: none; 
-        }
-
+        .btn-manual:active { transform: translateY(4px); border-bottom: none; box-shadow: none; }
         .icon { font-size: 24px; margin-bottom: 5px; }
     </style>
 </head>
 <body>
-    <a href="index.html" class="back-btn">⬅️ Back</a>
-    
-    <div class="btn-container">
-        <button class="btn-manual new-video">
-            <span class="icon">➕</span> New Video
-        </button>
-        <button class="btn-manual tutorial">
-            <span class="icon">📚</span> Tutorial
-        </button>
-        <button class="btn-manual save">
-            <span class="icon">💾</span> Save Draft
-        </button>
-        <button class="btn-manual history">
-            <span class="icon">🕒</span> History
-        </button>
+    <div class="container">
+        <a href="index.html" class="back-btn">⬅️ Back</a>
+        
+        <h1 class="page-title">Manual Edit Video</h1>
+        
+        <div class="btn-container">
+            <button class="btn-manual new-video">
+                <span class="icon">➕</span> New Video
+            </button>
+            <button class="btn-manual tutorial">
+                <span class="icon">📚</span> Tutorial
+            </button>
+            <button class="btn-manual save">
+                <span class="icon">💾</span> Save Draft
+            </button>
+            <button class="btn-manual history">
+                <span class="icon">🕒</span> History
+            </button>
+        </div>
     </div>
 </body>
 </html>
