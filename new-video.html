@@ -5,47 +5,42 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Video Editor Pro</title>
     <style>
-        /* CSS Reset */
         body, html { margin: 0; padding: 0; width: 100%; height: 100dvh; background: #000; color: white; overflow: hidden; font-family: sans-serif; }
         
-        /* Main Container - အောက်ကနေအပေါ်စီထားခြင်း */
         .page { display: flex; flex-direction: column; height: 100dvh; width: 100%; }
 
-        /* 1. Preview Area (45dvh) */
-        .preview-area { height: 45dvh; background: #000; display: flex; justify-content: center; align-items: center; position: relative; }
-        #videoPreview { max-width: 100%; max-height: 100%; object-fit: contain; }
-        .top-ui { position: absolute; top: 10px; left: 10px; right: 10px; display: flex; justify-content: space-between; z-index: 10; }
-        .action-btn { background: rgba(0,0,0,0.5); border: 1px solid #444; color: white; padding: 6px 15px; border-radius: 20px; cursor: pointer; font-size: 13px; }
+        /* Preview (40dvh) */
+        .preview-area { height: 40dvh; background: #000; display: flex; justify-content: center; align-items: center; position: relative; }
+        
+        /* Timeline (45dvh) - ကျန်တဲ့နေရာကို Timeline ပေးလိုက်တယ် */
+        .timeline-area { height: 45dvh; background: #1a1a1a; border-top: 1px solid #333; padding: 5px; overflow: hidden; }
 
-        /* 2. Timeline Area (40dvh) */
-        .timeline-area { height: 40dvh; background: #1a1a1a; border-top: 1px solid #333; padding: 10px; overflow-x: auto; }
-        .clip-box { width: 120px; height: 60px; background: #333; border: 1px solid #555; border-radius: 4px; display: flex; align-items: center; justify-content: center; }
+        /* Toolbar (8dvh) - အရမ်းကျဉ်းအောင် လျှော့လိုက်ပြီ */
+        .toolbar { height: 8dvh; background: #000; display: flex; justify-content: space-around; align-items: center; border-top: 1px solid #333; padding-bottom: 2px; }
+        
+        /* Bottom Space (7dvh) - အောက်ဆုံးနေရာလွတ် */
+        .bottom-space { height: 7dvh; background: #000; }
 
-        /* 3. Toolbar (12dvh) */
-        .toolbar { height: 12dvh; background: #000; display: flex; justify-content: space-around; align-items: center; border-top: 1px solid #333; }
-        .tool-item { display: flex; flex-direction: column; align-items: center; font-size: 10px; cursor: pointer; }
-        .tool-item span { font-size: 18px; margin-bottom: 2px; }
-
-        /* 4. Bottom Space (3dvh) */
-        .bottom-space { height: 3dvh; background: #000; }
+        /* Button ပုံစံ - ပိုသေသပ်အောင် */
+        .tool-item { display: flex; flex-direction: column; align-items: center; font-size: 9px; cursor: pointer; color: #ccc; }
+        .tool-item span { font-size: 16px; margin-bottom: 1px; }
+        
+        .action-btn { background: rgba(0,0,0,0.5); border: 1px solid #444; color: white; padding: 4px 12px; border-radius: 20px; font-size: 11px; }
     </style>
 </head>
 <body>
 
 <div class="page">
     <div class="preview-area">
-        <div class="top-ui">
-            <button class="action-btn" onclick="history.back()">✕</button>
-            <button class="action-btn" style="background: #007bff; border: none;">Export</button>
+        <div style="position:absolute; top:10px; left:10px; right:10px; display:flex; justify-content:space-between;">
+            <button class="action-btn">✕</button>
+            <button class="action-btn" style="background:#007bff; border:none;">Export</button>
         </div>
-        <video id="videoPreview" controls style="display: none;"></video>
-        <button id="importBtn" onclick="document.getElementById('fileInput').click()" style="background: #333; border: none; color: white; padding: 15px 30px; cursor: pointer;">Import Video</button>
-        <input type="file" id="fileInput" style="display: none;" accept="video/*" onchange="loadFile(event)">
+        <button id="importBtn" onclick="document.getElementById('fileInput').click()" style="background:#333; border:none; color:white; padding:10px 20px; cursor:pointer;">Import Video</button>
+        <input type="file" id="fileInput" style="display:none;" accept="video/*">
     </div>
 
-    <div class="timeline-area">
-        <div id="clipDisplay" class="clip-box" style="display: none;">Video Clip</div>
-    </div>
+    <div class="timeline-area"></div>
 
     <div class="toolbar">
         <div class="tool-item"><span>✂️</span>Edit</div>
@@ -58,19 +53,5 @@
     <div class="bottom-space"></div>
 </div>
 
-<script>
-    function loadFile(event) {
-        const video = document.getElementById('videoPreview');
-        const btn = document.getElementById('importBtn');
-        const clip = document.getElementById('clipDisplay');
-        const file = event.target.files[0];
-        if (file) {
-            video.src = URL.createObjectURL(file);
-            video.style.display = 'block';
-            btn.style.display = 'none';
-            clip.style.display = 'flex';
-        }
-    }
-</script>
 </body>
 </html>
