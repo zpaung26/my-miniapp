@@ -2,16 +2,47 @@
 <html lang="my">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Manual Edit Videos</title>
     <style>
-        body { font-family: sans-serif; padding: 20px; background: #f0f2f5; text-align: center; }
+        body { font-family: sans-serif; padding: 20px; background: #f0f2f5; }
         .back-btn { display: inline-block; padding: 10px 20px; background: #333; color: white; text-decoration: none; border-radius: 8px; margin-bottom: 20px; }
+        
+        /* ၄ ခုကို ၂ ခုတွဲ ပုံစံထုတ်ပေးမယ့် Code */
+        .btn-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr; /* ၂ ကွက် */
+            gap: 15px;
+            max-width: 450px;
+            margin: auto;
+        }
+
+        .btn-manual {
+            height: 80px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #ffffff;
+            border: none;
+            border-radius: 12px;
+            font-weight: bold;
+            color: #333;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .btn-manual:active { transform: translateY(2px); }
     </style>
 </head>
 <body>
     <a href="index.html" class="back-btn">⬅️ Back</a>
-    <h1>Manual Edit Videos</h1>
-    <p>ဒီနေရာမှာ Video Edit လုပ်တဲ့ tool ဒါမှမဟုတ် လမ်းညွှန်ချက်တွေ ထည့်လို့ရပါပြီ။</p>
+    
+    <div class="btn-container">
+        <button class="btn-manual">New Video</button>
+        <button class="btn-manual">Tutorial</button>
+        <button class="btn-manual">Save Draft</button>
+        <button class="btn-manual">History</button>
+    </div>
 </body>
 </html>
-
