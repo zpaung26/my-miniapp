@@ -5,47 +5,93 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Myanmar Recapper Group</title>
     <style>
-        /* ဒီအကွက်က CSS နေရာ - ဒီနေရာမှာပဲ ပုံစံတွေကို ထိန်းချုပ်ထားတယ် */
         body { font-family: sans-serif; background: #f0f2f5; padding: 20px; }
         .container { max-width: 450px; margin: auto; }
-        .credit-header { text-align: center; font-size: 22px; font-weight: bold; margin-bottom: 20px; color: #333; }
-        .btn-column { display: flex; flex-direction: column; gap: 15px; }
+        .header { text-align: center; font-size: 22px; font-weight: bold; margin-bottom: 20px; color: #333; }
+        .btn-column { display: flex; flex-direction: column; gap: 12px; }
 
-        /* 3D Button စတိုင် */
+        /* 3D Button Style */
         .btn { 
-            background: #4caf50; color: white; border: none;
+            background: #ffffff; color: #333; border: none;
             padding: 16px; border-radius: 12px; font-size: 16px; font-weight: 600;
             cursor: pointer; transition: 0.1s; 
-            border-bottom: 5px solid #388e3c; /* 3D အောက်ခြေ */
-            box-shadow: 0 4px 6px rgba(0,0,0,0.2);
+            border-bottom: 5px solid #ccc; 
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
             text-align: center;
         }
-        .btn:active {
-            transform: translateY(4px); border-bottom: none; box-shadow: none;           
-        }
-        .btn-premium { background: #607d8b; border-bottom: 5px solid #455a64; }
-        .btn-shop { background: #ff9800; border-bottom: 5px solid #e65100; }
+        .btn:active { transform: translateY(4px); border-bottom: none; box-shadow: none; }
+        
+        .btn-primary { background: #4caf50; color: white; border-bottom: 5px solid #388e3c; }
+        .btn-premium { background: #607d8b; color: white; border-bottom: 5px solid #455a64; }
+        .btn-shop { background: #ff9800; color: white; border-bottom: 5px solid #e65100; }
     </style>
 </head>
 <body>
 
-    <div class="container">
-        <div class="credit-header">Myanmar Recapper Group</div>
-        
-        <div class="btn-column">
-            <button class="btn btn-premium">English/China Videos</button>
-            <button class="btn">အလိုအလျောက် Recap</button>
-            <button class="btn">ဘာသာပြန် ဇာတ်ကား</button>
-            <button class="btn">Video ဒေါင်းလုပ်</button>
-            <button class="btn btn-premium">ဓာတ်ပုံဖန်တီးမည်</button>
-            <button class="btn btn-premium">ဘာသာပြန်မည်</button>
-            <button class="btn">စာသားမှအသံ</button>
-            <button class="btn">Manual Edit Videos</button>
-            <button class="btn btn-shop">Shop</button>
-            <button class="btn btn-primary" onclick="setLanguage('en')">🇬🇧 English</button>
+<div class="container">
+    <div class="header" id="mainHeader">Myanmar Recapper Group</div>
     
-        </div>
+    <div class="btn-column">
+        <button class="btn btn-premium" id="btn1">English/China Videos</button>
+        <button class="btn btn-primary" id="btn2">အလိုအလျောက် Recap</button>
+        <button class="btn btn-primary" id="btn3">ဘာသာပြန် ဇာတ်ကား</button>
+        <button class="btn btn-primary" id="btn4">Video ဒေါင်းလုပ်</button>
+        <button class="btn btn-premium" id="btn5">ဓာတ်ပုံဖန်တီးမည်</button>
+        <button class="btn btn-premium" id="btn6">ဘာသာပြန်မည်</button>
+        <button class="btn btn-primary" id="btn7">စာသားမှအသံ</button>
+        <button class="btn btn-primary" id="btn8">Manual Edit Videos</button>
+        <button class="btn btn-shop" id="btn10">🛒 Shop</button>
+        
+        <button class="btn" id="langBtn" onclick="toggleLanguage()">🇬🇧 English</button>
     </div>
+</div>
+
+<script>
+    let isEnglish = true;
+
+    function toggleLanguage() {
+        let btn = document.getElementById("langBtn");
+        let header = document.getElementById("mainHeader");
+        
+        let btn1 = document.getElementById("btn1");
+        let btn2 = document.getElementById("btn2");
+        let btn3 = document.getElementById("btn3");
+        let btn4 = document.getElementById("btn4");
+        let btn5 = document.getElementById("btn5");
+        let btn6 = document.getElementById("btn6");
+        let btn7 = document.getElementById("btn7");
+        let btn8 = document.getElementById("btn8");
+        let btn10 = document.getElementById("btn10");
+
+        if (isEnglish) {
+            btn.innerText = "🇲🇲 မြန်မာ";
+            header.innerText = "Myanmar Recapper Group ";
+            btn1.innerText = "အင်္ဂလိပ်/တရုတ် ဗီဒီယိုများ";
+            btn2.innerText = "အလိုအလျောက် Recap";
+            btn3.innerText = "ဘာသာပြန် ဇာတ်ကား";
+            btn4.innerText = "Video ဒေါင်းလုပ်";
+            btn5.innerText = "ဓာတ်ပုံဖန်တီးမည်";
+            btn6.innerText = "ဘာသာပြန်မည်";
+            btn7.innerText = "စာသားမှအသံ";
+            btn8.innerText = "Manual Edit Videos";
+            btn10.innerText = "🛒 ဆိုင်";
+            isEnglish = false;
+        } else {
+            btn.innerText = "🇬🇧 English";
+            header.innerText = "Myanmar Recapper Group";
+            btn1.innerText = "English/China Videos";
+            btn2.innerText = "Auto Recap";
+            btn3.innerText = "Translated Movies";
+            btn4.innerText = "Video Download";
+            btn5.innerText = "Create Photos";
+            btn6.innerText = "Translate";
+            btn7.innerText = "Text to Speech";
+            btn8.innerText = "Manual Edit Videos";
+            btn10.innerText = "🛒 Shop";
+            isEnglish = true;
+        }
+    }
+</script>
 
 </body>
 </html>
