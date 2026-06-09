@@ -1,44 +1,93 @@
-<style>
-    body { margin: 0; padding: 0; background: #000; color: white; height: 100vh; overflow: hidden; display: flex; flex-direction: column; }
+<!DOCTYPE html>
+<html lang="my">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Video Editor Pro</title>
+    <style>
+        body { margin: 0; padding: 0; background: #000; color: white; height: 100vh; overflow: hidden; display: flex; flex-direction: column; font-family: sans-serif; }
 
-    /* Preview Area: 40vh အတိအကျ */
-    .preview-area {
-        height: 40vh; 
-        width: 100%;
-        background: #000;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        position: relative;
-    }
+        /* ၁။ Preview Area (40vh) */
+        .preview-area {
+            height: 40vh; 
+            width: 100%;
+            background: #000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+        }
 
-    /* ဗီဒီယိုကို ပိုအပြည့်ပေါ်အောင် ချဲ့ပေးခြင်း */
-    #videoPreview {
-        width: 100%;       /* Preview Area အပြည့် */
-        height: 100%;      /* Preview Area အပြည့် */
-        object-fit: contain; /* Video Ratio မပျက်ဘဲ အပြည့်အဝဆန့်ထုတ်ခြင်း */
-    }
+        #videoPreview {
+            width: 100%;
+            height: 100%;
+            object-fit: contain; /* Video Ratio မပျက်ဘဲ အပြည့်ချဲ့ခြင်း */
+        }
 
-    /* Bottom Panel: ကျန်တဲ့ 60vh */
-    .bottom-panel {
-        height: 60vh;
-        background: #111;
-        display: flex;
-        flex-direction: column;
-    }
+        .import-btn { padding: 15px 30px; background: #333; border: 2px dashed #555; color: white; cursor: pointer; border-radius: 10px; }
 
-    .timeline-area {
-        flex: 1; /* Timeline နေရာအကျယ်ဆုံး */
-        padding: 10px;
-        border-bottom: 1px solid #333;
-        overflow-x: auto;
-    }
+        /* ၂။ Bottom Panel (60vh) */
+        .bottom-panel {
+            height: 60vh;
+            background: #111;
+            display: flex;
+            flex-direction: column;
+        }
 
-    .toolbar {
-        height: 60px;
-        background: #000;
-        display: flex;
-        justify-content: space-around;
-        align-items: center;
-    }
-</style>
+        .timeline-area {
+            flex: 1;
+            padding: 10px;
+            border-bottom: 1px solid #333;
+            overflow-x: auto;
+            display: flex;
+            align-items: center;
+        }
+
+        /* ၃။ Toolbar (အောက်ဆုံး) */
+        .toolbar {
+            height: 60px;
+            background: #000;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            font-size: 12px;
+        }
+        .tool { display: flex; flex-direction: column; align-items: center; cursor: pointer; }
+    </style>
+</head>
+<body>
+
+    <div class="preview-area" id="previewArea">
+        <button class="import-btn" id="importBtn" onclick="document.getElementById('fileInput').click()">Import Video</button>
+        <input type="file" id="fileInput" style="display: none;" accept="video/*" onchange="loadFile(event)">
+        <video id="videoPreview" controls style="display: none;"></video>
+    </div>
+
+    <div class="bottom-panel">
+        <div class="timeline-area">
+            <span style="color: #666;">Timeline Track Area</span>
+        </div>
+        <div class="toolbar">
+            <div class="tool">✂️<span>Edit</span></div>
+            <div class="tool">🎵<span>Audio</span></div>
+            <div class="tool">📝<span>Text</span></div>
+            <div class="tool">✨<span>Effects</span></div>
+            <div class="tool">🖼️<span>Overlay</span></div>
+        </div>
+    </div>
+
+    <script>
+        function loadFile(event) {
+            const video = document.getElementById('videoPreview');
+            const btn = document.getElementById('importBtn');
+            const file = event.target.files[0];
+            
+            if (file) {
+                video.src = URL.createObjectURL(file);
+                video.style.display = 'block';
+                btn.style.display = 'none';
+            }
+        }
+    </script>
+</body>
+</html>
