@@ -10,16 +10,6 @@
         .header { text-align: center; font-size: 22px; font-weight: bold; margin-bottom: 20px; color: #333; }
         .btn-column { display: flex; flex-direction: column; gap: 12px; }
 
-        /* Video Modal Style */
-        #videoModal { 
-            display:none; position:fixed; top:0; left:0; width:100%; height:100%; 
-            background:rgba(0,0,0,0.8); z-index:100; justify-content:center; align-items:center; 
-        }
-        .modal-content { 
-            background:white; padding:20px; border-radius:12px; width:90%; max-width:400px; text-align:center; 
-        }
-
-        /* Language Wrapper */
         .lang-wrapper { position: relative; display: flex; flex-direction: column; align-items: center; }
 
         /* 3D Popup Style */
@@ -31,14 +21,17 @@
             font-weight: bold; cursor: pointer; z-index: 10; text-align: center;
         }
 
-        .btn { 
+        /* ခလုတ်ပုံစံ */
+        .btn, .btn-link { 
             width: 100%; height: 60px; display: flex; align-items: center; justify-content: center;
             box-sizing: border-box; background: #ffffff; color: #333; border: none; padding: 0 16px; 
             border-radius: 12px; font-size: 16px; font-weight: 600; cursor: pointer; 
             transition: 0.1s; border-bottom: 5px solid #ccc; 
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1); text-align: center;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1); text-decoration: none;
         }
         .btn:active { transform: translateY(4px); border-bottom: none; box-shadow: none; }
+        
+        /* ခလုတ်အရောင်များ */
         .btn-primary { background: #4caf50; color: white; border-bottom: 5px solid #388e3c; }
         .btn-premium { background: #607d8b; color: white; border-bottom: 5px solid #455a64; }
         .btn-shop { background: #ff9800; color: white; border-bottom: 5px solid #e65100; }
@@ -50,8 +43,8 @@
     <div class="header" id="mainHeader">Myanmar Recapper Group</div>
     
     <div class="btn-column">
-        <a href="videos.html" class="btn btn-premium" style="text-decoration: none; display: flex; align-items: center; justify-content: center; color: white; height: 60px; box-sizing: border-box; border-bottom: 5px solid #455a64; border-radius: 12px; font-weight: 600;">
-    English/China Videos</a>
+        <a href="videos.html" class="btn btn-premium" id="btn1">English/China Videos</a>
+        
         <button class="btn btn-primary" id="btn2">Auto Recap</button>
         <button class="btn btn-primary" id="btn3">Translated Movies</button>
         <button class="btn btn-primary" id="btn4">Video Download</button>
@@ -68,29 +61,9 @@
     </div>
 </div>
 
-<div id="videoModal">
-    <div class="modal-content">
-        <h3 id="modalTitle">Video List</h3>
-        <ul style="list-style:none; padding:0; text-align:left;">
-            <li>✅ <a href="#">Video 1</a></li>
-            <li>✅ <a href="#">Video 2</a></li>
-        </ul>
-        <button onclick="closeModal()" class="btn btn-premium" style="height:40px;">ပိတ်မည်</button>
-    </div>
-</div>
-
 <script>
     let isEnglish = true;
 
-    // Video Modal Functions
-    function showVideos() {
-        document.getElementById("videoModal").style.display = "flex";
-    }
-    function closeModal() {
-        document.getElementById("videoModal").style.display = "none";
-    }
-
-    // Language Functions
     function showConfirm() {
         let msg = document.getElementById("confirmMsg");
         msg.style.display = (msg.style.display === "block") ? "none" : "block";
@@ -101,24 +74,24 @@
         let btn = document.getElementById("langBtn");
         let header = document.getElementById("mainHeader");
         let confirmMsg = document.getElementById("confirmMsg");
-        let modalTitle = document.getElementById("modalTitle");
         
-        let ids = ["btn1", "btn2", "btn3", "btn4", "btn5", "btn6", "btn7", "btn8", "btn10"];
+        // btn1 ကို a tag ပြောင်းထားလို့ array ထဲကထုတ်လိုက်ပါတယ်
+        let ids = ["btn2", "btn3", "btn4", "btn5", "btn6", "btn7", "btn8", "btn10"];
 
         if (isEnglish) {
             btn.innerText = "🇲🇲 မြန်မာ";
+            document.getElementById("btn1").innerText = "အင်္ဂလိပ်/တရုတ် ဗီဒီယိုများ";
             confirmMsg.innerText = "🇬🇧 Switch to English";
             header.innerText = "မြန်မာရီကပ်ပါး ဂရု";
-            modalTitle.innerText = "ဗီဒီယိုများ";
-            const myTexts = ["အင်္ဂလိပ်/တရုတ် ဗီဒီယိုများ", "အလိုအလျောက် Recap", "ဘာသာပြန် ဇာတ်ကား", "Video ဒေါင်းလုပ်", "ဓာတ်ပုံဖန်တီးမည်", "ဘာသာပြန်မည်", "စာသားမှအသံ", "Manual Edit Videos", "🛒 ဆိုင်"];
+            const myTexts = ["အလိုအလျောက် Recap", "ဘာသာပြန် ဇာတ်ကား", "Video ဒေါင်းလုပ်", "ဓာတ်ပုံဖန်တီးမည်", "ဘာသာပြန်မည်", "စာသားမှအသံ", "Manual Edit Videos", "🛒 ဆိုင်"];
             ids.forEach((id, index) => document.getElementById(id).innerText = myTexts[index]);
             isEnglish = false;
         } else {
             btn.innerText = "🇬🇧 English";
+            document.getElementById("btn1").innerText = "English/China Videos";
             confirmMsg.innerText = "🇲🇲 မြန်မာသို့ ပြောင်းမည်";
             header.innerText = "Myanmar Recapper Group";
-            modalTitle.innerText = "Video List";
-            const enTexts = ["English/China Videos", "Auto Recap", "Translated Movies", "Video Download", "Create Photos", "Translate", "Text to Speech", "Manual Edit Videos", "🛒 Shop"];
+            const enTexts = ["Auto Recap", "Translated Movies", "Video Download", "Create Photos", "Translate", "Text to Speech", "Manual Edit Videos", "🛒 Shop"];
             ids.forEach((id, index) => document.getElementById(id).innerText = enTexts[index]);
             isEnglish = true;
         }
