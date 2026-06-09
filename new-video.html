@@ -15,49 +15,52 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            position: relative;
+            position: relative; /* အပေါ်က ခလုတ်တွေအတွက် အရေးကြီးတယ် */
         }
 
-        #videoPreview {
-            width: 100%;
-            height: 100%;
-            object-fit: contain; /* Video Ratio မပျက်ဘဲ အပြည့်ချဲ့ခြင်း */
+        #videoPreview { width: 100%; height: 100%; object-fit: contain; }
+
+        /* Overlay ခလုတ်များ (X နဲ့ Export) */
+        .top-ui {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            right: 10px;
+            display: flex;
+            justify-content: space-between;
+            z-index: 10;
+        }
+
+        .action-btn {
+            background: rgba(0,0,0,0.5);
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 14px;
         }
 
         .import-btn { padding: 15px 30px; background: #333; border: 2px dashed #555; color: white; cursor: pointer; border-radius: 10px; }
 
         /* ၂။ Bottom Panel (60vh) */
-        .bottom-panel {
-            height: 60vh;
-            background: #111;
-            display: flex;
-            flex-direction: column;
-        }
-
-        .timeline-area {
-            flex: 1;
-            padding: 10px;
-            border-bottom: 1px solid #333;
-            overflow-x: auto;
-            display: flex;
-            align-items: center;
-        }
-
-        /* ၃။ Toolbar (အောက်ဆုံး) */
-        .toolbar {
-            height: 60px;
-            background: #000;
-            display: flex;
-            justify-content: space-around;
-            align-items: center;
-            font-size: 12px;
-        }
+        .bottom-panel { height: 60vh; background: #111; display: flex; flex-direction: column; }
+        .timeline-area { flex: 1; padding: 10px; border-bottom: 1px solid #333; overflow-x: auto; display: flex; align-items: center; }
+        
+        /* ၃။ Toolbar */
+        .toolbar { height: 70px; background: #000; display: flex; justify-content: space-around; align-items: center; font-size: 11px; flex-shrink: 0; }
         .tool { display: flex; flex-direction: column; align-items: center; cursor: pointer; }
+        .tool span { font-size: 20px; margin-bottom: 2px; }
     </style>
 </head>
 <body>
 
     <div class="preview-area" id="previewArea">
+        <div class="top-ui">
+            <button class="action-btn" onclick="window.location.href='index.html'">✕</button>
+            <button class="action-btn" style="background: #007bff;">Export</button>
+        </div>
+
         <button class="import-btn" id="importBtn" onclick="document.getElementById('fileInput').click()">Import Video</button>
         <input type="file" id="fileInput" style="display: none;" accept="video/*" onchange="loadFile(event)">
         <video id="videoPreview" controls style="display: none;"></video>
@@ -68,11 +71,11 @@
             <span style="color: #666;">Timeline Track Area</span>
         </div>
         <div class="toolbar">
-            <div class="tool">✂️<span>Edit</span></div>
-            <div class="tool">🎵<span>Audio</span></div>
-            <div class="tool">📝<span>Text</span></div>
-            <div class="tool">✨<span>Effects</span></div>
-            <div class="tool">🖼️<span>Overlay</span></div>
+            <div class="tool"><span>✂️</span>Edit</div>
+            <div class="tool"><span>🎵</span>Audio</div>
+            <div class="tool"><span>📝</span>Text</div>
+            <div class="tool"><span>✨</span>Effects</div>
+            <div class="tool"><span>🖼️</span>Overlay</div>
         </div>
     </div>
 
@@ -81,7 +84,6 @@
             const video = document.getElementById('videoPreview');
             const btn = document.getElementById('importBtn');
             const file = event.target.files[0];
-            
             if (file) {
                 video.src = URL.createObjectURL(file);
                 video.style.display = 'block';
