@@ -1,15 +1,47 @@
 <!DOCTYPE html>
-<html>
+<html lang="my">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>My MiniApp</title>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <style>
-        body { font-family: sans-serif; text-align: center; padding: 20px; }
+        body { font-family: sans-serif; text-align: center; padding: 20px; background-color: #f4f4f9; }
+        .card { background: white; padding: 20px; border-radius: 15px; box-shadow: 0 4px 8px rgba(0,0,0,0.1); }
+        .credit { font-size: 20px; font-weight: bold; color: #333; margin-bottom: 20px; }
+        button { 
+            display: block; width: 100%; padding: 15px; margin: 10px 0; 
+            border: none; border-radius: 10px; font-size: 16px; cursor: pointer;
+            background-color: #2678FF; color: white;
+        }
     </style>
 </head>
 <body>
-    <h1>Welcome to My MiniApp</h1>
-    <p>ဤနေရာတွင် သင်၏ လုပ်ဆောင်ချက်များကို ထည့်သွင်းနိုင်ပါသည်။</p>
+    <div class="card">
+        <h2>Video Subtitle Tool</h2>
+        <div class="credit" id="creditDisplay">Credit: 10</div>
+        
+        <button onclick="uploadVideo()">📥 ဗီဒီယို တင်ရန်</button>
+        <button onclick="addSubtitle()">📝 စာတန်းထိုးရန်</button>
+        <button onclick="closeApp()" style="background-color: #ff4d4d;">❌ ပိတ်ရန်</button>
+    </div>
+
+    <script>
+        let tg = window.Telegram.WebApp;
+        tg.expand();
+
+        function uploadVideo() {
+            alert("ဗီဒီယို တင်ခြင်း လုပ်ဆောင်ချက်");
+            // နောက်ပိုင်းတွင် ဒီနေရာတွင် File Picker ထည့်ပါမည်
+        }
+
+        function addSubtitle() {
+            alert("စာတန်းထိုးခြင်း လုပ်ဆောင်ချက်");
+        }
+
+        function closeApp() {
+            tg.close();
+        }
+    </script>
 </body>
 </html>
