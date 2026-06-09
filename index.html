@@ -43,16 +43,21 @@
     <div class="header" id="mainHeader">Myanmar Recap Group</div>
     
     <div class="btn-column">
+        
         <a href="videos.html" class="btn btn-premium" id="btn1">English/China Videos</a>
         
         <button class="btn btn-primary" id="btn2">Auto Recap</button>
         <button class="btn btn-primary" id="btn3">Translated Movies</button>
         <button class="btn btn-primary" id="btn4">Video Download</button>
         <button class="btn btn-premium" id="btn5">Create Photos</button>
+        
         <a href="translate.html" class="btn btn-premium" id="btn6">Translate</a>
+        
         <button class="btn btn-primary" id="btn7">Text to Speech</button>
+        
         <a href="manual-edit.html" class="btn btn-primary" id="btn8">Manual Edit Videos</a>
-        <button class="btn btn-shop" id="btn10">🛒 Shop</button>
+        
+        <button class="btn btn-shop" id="btn9">🛒 Shop</button>
         
         <div class="lang-wrapper">
             <div id="confirmMsg" class="confirm-msg" onclick="applyLanguageChange()">🇲🇲 မြန်မာ</div>
@@ -76,7 +81,7 @@
         let confirmMsg = document.getElementById("confirmMsg");
         
         // Link ဖြစ်သွားတဲ့ ခလုတ်များကို ဖယ်ထုတ်ပြီး ကျန်တာတွေကိုပဲ Array ထဲထားပါတယ်
-        let ids = ["btn2", "btn3", "btn4", "btn5", "btn7", "btn10"];
+        let ids = ["btn2", "btn3", "btn4", "btn5", "btn7", "btn9"];
 
         if (isEnglish) {
             btn.innerText = "🇲🇲 မြန်မာ";
