@@ -75,13 +75,14 @@
         let header = document.getElementById("mainHeader");
         let confirmMsg = document.getElementById("confirmMsg");
         
-        // Link ဖြစ်သွားတဲ့ ခလုတ်နှစ်ခုကို ဖယ်ထုတ်ပြီး ကျန်တာတွေကိုပဲ Array ထဲထားပါတယ်
-        let ids = ["btn2", "btn3", "btn4", "btn5", "btn7", "btn8", "btn10"];
+        // Link ဖြစ်သွားတဲ့ ခလုတ်များကို ဖယ်ထုတ်ပြီး ကျန်တာတွေကိုပဲ Array ထဲထားပါတယ်
+        let ids = ["btn2", "btn3", "btn4", "btn5", "btn7", "btn10"];
 
         if (isEnglish) {
             btn.innerText = "🇲🇲 မြန်မာ";
             document.getElementById("btn1").innerText = "အင်္ဂလိပ်/တရုတ် ဗီဒီယိုများ";
             document.getElementById("btn6").innerText = "ဘာသာပြန်မည်";
+            document.getElementById("btn8").innerText = "Manual Edit Videos";
             confirmMsg.innerText = "🇬🇧 English";
             header.innerText = "Myanmar Recap Group";
             const myTexts = ["အလိုအလျောက် Recap", "ဘာသာပြန် ဇာတ်ကား", "Video ဒေါင်းလုပ်", "ဓာတ်ပုံဖန်တီးမည်", "စာသားမှအသံ", "Manual Edit Videos", "🛒 ဆိုင်"];
@@ -91,9 +92,10 @@
             btn.innerText = "🇬🇧 English";
             document.getElementById("btn1").innerText = "English/China Videos";
             document.getElementById("btn6").innerText = "Translate";
+            document.getElementById("btn8").innerText = "Manual Edit Videos";
             confirmMsg.innerText = "🇲🇲 မြန်မာ";
             header.innerText = "Myanmar Recap Group";
-            const enTexts = ["Auto Recap", "Translated Movies", "Video Download", "Create Photos", "Text to Speech", "Manual Edit Videos", "🛒 Shop"];
+            const enTexts = ["Auto Recap", "Translated Movies", "Video Download", "Create Photos", "Text to Speech", "Manual Edit Video", "🛒 Shop"];
             ids.forEach((id, index) => document.getElementById(id).innerText = enTexts[index]);
             isEnglish = true;
         }
