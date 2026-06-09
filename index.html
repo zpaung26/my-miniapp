@@ -3,48 +3,48 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MiniApp Dashboard</title>
+    <title>Myanmar Recapper Group</title>
     <style>
-        body { font-family: sans-serif; background: #f0f2f5; padding: 15px; }
-        .container { max-width: 500px; margin: auto; }
-        
-        /* ခလုတ်များ အစီအစဉ် */
-        .btn-column { 
-            display: flex; flex-direction: column; gap: 10px; 
-        }
-        
-        /* ခလုတ်ပုံစံ */
+        /* ဒီအကွက်က CSS နေရာ - ဒီနေရာမှာပဲ ပုံစံတွေကို ထိန်းချုပ်ထားတယ် */
+        body { font-family: sans-serif; background: #f0f2f5; padding: 20px; }
+        .container { max-width: 450px; margin: auto; }
+        .credit-header { text-align: center; font-size: 22px; font-weight: bold; margin-bottom: 20px; color: #333; }
+        .btn-column { display: flex; flex-direction: column; gap: 15px; }
+
+        /* 3D Button စတိုင် */
         .btn { 
-            background: #4caf50; color: white; border: none; 
-            padding: 15px; border-radius: 8px; font-size: 16px; 
-            text-align: center; cursor: pointer; transition: 0.3s;
+            background: #4caf50; color: white; border: none;
+            padding: 16px; border-radius: 12px; font-size: 16px; font-weight: 600;
+            cursor: pointer; transition: 0.1s; 
+            border-bottom: 5px solid #388e3c; /* 3D အောက်ခြေ */
+            box-shadow: 0 4px 6px rgba(0,0,0,0.2);
+            text-align: center;
         }
-        .btn:hover { opacity: 0.9; }
-        
-        /* Premium/Credit ခလုတ်များ */
-        .btn-premium { background: #607d8b; }
-        .btn-shop { background: #ff9800; }
-        .credit-header { text-align: center; font-size: 20px; font-weight: bold; margin-bottom: 15px; }
+        .btn:active {
+            transform: translateY(4px); border-bottom: none; box-shadow: none;           
+        }
+        .btn-premium { background: #607d8b; border-bottom: 5px solid #455a64; }
+        .btn-shop { background: #ff9800; border-bottom: 5px solid #e65100; }
     </style>
 </head>
 <body>
 
-<div class="container">
-    <div class="credit-header">Myanmar Recapper Group</div>
-    
-    <div class="btn-column">
-        <button class="btn">English/China Videos</button>
-        <button class="btn">အလိုအလျောက် Recap</button>
-        <button class="btn">ဘာသာပြန် ဇာတ်ကား</button>
-        <button class="btn">video ဒေါင်းလုပ်</button>
-        <button class="btn">ဓာတ်ပုံဖန်တီးမည်</button>
-        <button class="btn">ဘာသာပြန်မည်</button>
-        <button class="btn">စာသားမှအသံ</button>
-        <button class="btn">Manual Edit Videos</button>
-        <button class="btn btn-shop">Shop</button>
-        <button class="btn">English</button>
+    <div class="container">
+        <div class="credit-header">Myanmar Recapper Group</div>
+        
+        <div class="btn-column">
+            <button class="btn btn-premium">English/China Videos</button>
+            <button class="btn">အလိုအလျောက် Recap</button>
+            <button class="btn">ဘာသာပြန် ဇာတ်ကား</button>
+            <button class="btn">Video ဒေါင်းလုပ်</button>
+            <button class="btn btn-premium">ဓာတ်ပုံဖန်တီးမည်</button>
+            <button class="btn btn-premium">ဘာသာပြန်မည်</button>
+            <button class="btn">စာသားမှအသံ</button>
+            <button class="btn">Manual Edit Videos</button>
+            <button class="btn btn-shop">Shop</button>
+            <button class="btn">English</button>
+        </div>
     </div>
-</div>
 
 </body>
 </html>
