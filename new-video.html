@@ -3,51 +3,41 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>P10 - 3D Top Bar & Fixed Timeline</title>
+    <title>P11 - Integrated Import</title>
     <style>
         :root { --side-width: 120px; }
         body, html { margin: 0; padding: 0; width: 100%; height: 100dvh; background: #000; color: white; font-family: sans-serif; overflow: hidden; }
         .page { display: flex; flex-direction: column; height: 100dvh; }
 
-        /* 3D Top Bar Buttons */
+        /* P10 3D Top Bar */
         .top-button-area { height: 5dvh; background: #111; display: flex; align-items: center; justify-content: space-between; padding: 0 10px; border-bottom: 1px solid #333; }
         .action-btn { 
-            background: #444; 
-            border: none; 
-            color: #fff; 
-            padding: 5px 15px; 
-            border-radius: 6px; 
-            cursor: pointer; 
-            font-size: 11px; 
-            /* 3D Effect */
             background: linear-gradient(145deg, #555, #222);
+            border: 1px solid #000; color: #fff; padding: 5px 15px; border-radius: 6px; cursor: pointer; font-size: 11px;
             box-shadow: 2px 3px 5px #000, inset 1px 1px 1px #777;
-            border: 1px solid #000;
         }
-        .action-btn:active { box-shadow: inset 2px 2px 5px #000; }
         .export-btn { background: linear-gradient(145deg, #007bff, #0056b3); }
 
-        /* Preview Area */
-        .preview-area { height: 40dvh; background: #000; }
+        .preview-area { height: 40dvh; background: #000; display: flex; justify-content: center; align-items: center; }
+        #previewMedia { max-width: 100%; max-height: 100%; object-fit: contain; }
 
-        /* Timeline Area */
+        /* P10 Timeline Area */
         .timeline-area { height: 45dvh; background: #1a1a1a; border-top: 1px solid #333; position: relative; display: flex; flex-direction: column; }
         
-        /* 3D Side Tools */
+        /* P10 3D Side Tools */
         .side-tools { width: var(--side-width); position: sticky; left: 0; z-index: 100; background: #1a1a1a; border-right: 1px solid #333; display: flex; flex-direction: column; justify-content: space-around; padding: 5px; }
         .tool-box { width: 90%; margin: 5px auto; padding: 8px; font-size: 9px; text-align: center; color: white; cursor: pointer; border-radius: 8px; background: linear-gradient(145deg, #333, #1a1a1a); box-shadow: 2px 3px 5px #000; }
         
-        /* Playhead & Ruler */
         #timelineRuler { height: 25px; display: flex; align-items: flex-end; padding-left: var(--side-width); color: #888; font-size: 10px; overflow-x: hidden; border-bottom: 1px solid #333; }
         .tick { width: 40px; flex-shrink: 0; border-left: 1px solid #555; padding-left: 2px; }
         #playhead { position: absolute; left: 50vw; top: 25px; bottom: 0; width: 2px; background: #ff4757; z-index: 20; pointer-events: none; }
         
-        /* Accurate Timeline Alignment */
         .tracks-container { flex-grow: 1; overflow-x: auto; position: relative; padding-left: calc(50vw - var(--side-width)); padding-right: 50vw; }
         .track-row { height: 33.33%; display: flex; align-items: center; padding: 2px 5px; min-width: max-content; }
-        .video-clip { height: 25px; background: #333; border: 1px solid #555; margin-right: 5px; flex-shrink: 0; cursor: pointer; }
+        
+        .video-clip { height: 25px; background: #333; border: 1px solid #555; margin-right: 5px; flex-shrink: 0; cursor: pointer; display: flex; align-items: center; overflow: hidden; }
+        .video-clip img, .video-clip video { height: 100%; object-fit: cover; }
 
-        /* Bottom Toolbar */
         .bottom-toolbar { height: 10dvh; background: #000; display: flex; justify-content: space-around; align-items: center; border-top: 1px solid #333; font-size: 10px; }
     </style>
 </head>
@@ -57,15 +47,14 @@
     <div class="top-button-area">
         <button class="action-btn" onclick="window.history.back()">✕</button>
         <div style="display: flex; gap: 8px;">
-            <button class="action-btn" onclick="document.getElementById('videoInput').click()">Video</button>
-            <button class="action-btn" onclick="document.getElementById('imgInput').click()">Photo</button>
+            <button class="action-btn" onclick="document.getElementById('fileInput').click()">Import</button>
             <button class="action-btn export-btn">Export</button>
         </div>
     </div>
 
     <div class="preview-area">
-        <input type="file" id="videoInput" style="display:none;" accept="video/*" multiple>
-        <input type="file" id="imgInput" style="display:none;" accept="image/*" multiple>
+        <div id="previewMedia">Media Preview</div>
+        <input type="file" id="fileInput" style="display:none;" accept="video/*,image/*" multiple>
     </div>
 
     <div class="timeline-area">
@@ -88,8 +77,46 @@
 </div>
 
 <script>
+    const videoTrack = document.getElementById('videoTrack');
     const scrollContainer = document.getElementById('scrollContainer');
     const ruler = document.getElementById('timelineRuler');
+    const previewMedia = document.getElementById('previewMedia');
+    let totalDuration = 0;
+
+    // P11 Import Function
+    document.getElementById('fileInput').addEventListener('change', function(e) {
+        Array.from(e.target.files).forEach(file => {
+            const clip = document.createElement('div');
+            clip.className = 'video-clip';
+            clip.style.width = '120px'; // 3s
+            
+            const media = document.createElement(file.type.startsWith('video') ? 'video' : 'img');
+            media.src = URL.createObjectURL(file);
+            clip.appendChild(media);
+            
+            clip.onclick = () => {
+                previewMedia.innerHTML = '';
+                previewMedia.appendChild(media.cloneNode(true));
+            };
+            
+            videoTrack.appendChild(clip);
+            totalDuration += 3000;
+            updateRuler();
+        });
+    });
+
+    function updateRuler() {
+        ruler.innerHTML = '';
+        const totalSeconds = Math.ceil(totalDuration / 1000);
+        ruler.style.minWidth = (totalSeconds * 40) + 'px';
+        for (let i = 0; i <= totalSeconds; i++) {
+            const tick = document.createElement('div');
+            tick.className = 'tick';
+            tick.innerText = i % 60 === 0 ? Math.floor(i/60)+":00" : (i%60);
+            ruler.appendChild(tick);
+        }
+    }
+
     scrollContainer.onscroll = () => { ruler.scrollLeft = scrollContainer.scrollLeft; };
 </script>
 </body>
