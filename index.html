@@ -8,25 +8,22 @@
         body { font-family: sans-serif; background: #f0f2f5; padding: 20px; }
         .container { max-width: 450px; margin: auto; }
         .header { text-align: center; font-size: 22px; font-weight: bold; margin-bottom: 20px; color: #333; }
+        .btn-column { display: flex; flex-direction: column; gap: 12px; }
+
+        /* ခလုတ်နှင့် ကပ်လျက်စာတန်း အုပ်စု */
+        .lang-wrapper { display: flex; flex-direction: column; gap: 4px; }
         
-        /* အတည်ပြုစာတန်းပုံစံ */
-        #confirmMsg { 
-            text-align: center; color: #d32f2f; font-weight: bold; 
-            margin-bottom: 15px; cursor: pointer; display: none; padding: 12px;
-            background: #ffebee; border-radius: 12px; border: 2px dashed #d32f2f;
+        .confirm-msg { 
+            display: none; text-align: center; font-size: 13px; color: #d32f2f; 
+            font-weight: bold; cursor: pointer; padding: 5px;
+            background: #ffebee; border-radius: 8px; border: 1px dashed #d32f2f;
         }
 
-        .btn-column { display: flex; flex-direction: column; gap: 12px; }
-        
-        /* 3D ခလုတ်ပုံစံ */
         .btn { 
-            background: #ffffff; color: #333; border: none;
-            padding: 16px; border-radius: 12px; font-size: 16px; font-weight: 600;
-            cursor: pointer; transition: 0.1s; border-bottom: 5px solid #ccc; 
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1); text-align: center;
+            background: #ffffff; color: #333; border: none; padding: 16px; border-radius: 12px; 
+            font-size: 16px; font-weight: 600; cursor: pointer; transition: 0.1s; 
+            border-bottom: 5px solid #ccc; box-shadow: 0 4px 6px rgba(0,0,0,0.1);
         }
-        .btn:active { transform: translateY(4px); border-bottom: none; box-shadow: none; }
-        
         .btn-primary { background: #4caf50; color: white; border-bottom: 5px solid #388e3c; }
         .btn-premium { background: #607d8b; color: white; border-bottom: 5px solid #455a64; }
         .btn-shop { background: #ff9800; color: white; border-bottom: 5px solid #e65100; }
@@ -36,8 +33,6 @@
 
 <div class="container">
     <div class="header" id="mainHeader">Myanmar Recapper Group</div>
-    
-    <div id="confirmMsg" onclick="applyLanguageChange()">ဘာသာစကားပြောင်းရန် နှိပ်ပါ (Click to change)</div>
     
     <div class="btn-column">
         <button class="btn btn-premium" id="btn1">English/China Videos</button>
@@ -50,34 +45,38 @@
         <button class="btn btn-primary" id="btn8">Manual Edit Videos</button>
         <button class="btn btn-shop" id="btn10">🛒 Shop</button>
         
-        <button class="btn" id="langBtn" onclick="showConfirm()">🇬🇧 English</button>
+        <div class="lang-wrapper">
+            <div id="confirmMsg" class="confirm-msg" onclick="applyLanguageChange()">🇲🇲 မြန်မာသို့ ပြောင်းမည်</div>
+            <button class="btn" id="langBtn" onclick="showConfirm()">🇬🇧 English</button>
+        </div>
     </div>
 </div>
 
 <script>
     let isEnglish = true;
 
-    // အတည်ပြုစာတန်း ပေါ်လာစေရန်
     function showConfirm() {
         document.getElementById("confirmMsg").style.display = "block";
     }
 
-    // ဘာသာစကား အမှန်တကယ် ပြောင်းလဲခြင်း
     function applyLanguageChange() {
         document.getElementById("confirmMsg").style.display = "none";
         let btn = document.getElementById("langBtn");
         let header = document.getElementById("mainHeader");
+        let confirmMsg = document.getElementById("confirmMsg");
         
         let ids = ["btn1", "btn2", "btn3", "btn4", "btn5", "btn6", "btn7", "btn8", "btn10"];
 
         if (isEnglish) {
             btn.innerText = "🇲🇲 မြန်မာ";
-            header.innerText = "Myanmar Recapper Group";
+            confirmMsg.innerText = "🇬🇧 Switch to English";
+            header.innerText = "မြန်မာရီကပ်ပါး ဂရု";
             const myTexts = ["အင်္ဂလိပ်/တရုတ် ဗီဒီယိုများ", "အလိုအလျောက် Recap", "ဘာသာပြန် ဇာတ်ကား", "Video ဒေါင်းလုပ်", "ဓာတ်ပုံဖန်တီးမည်", "ဘာသာပြန်မည်", "စာသားမှအသံ", "Manual Edit Videos", "🛒 ဆိုင်"];
             ids.forEach((id, index) => document.getElementById(id).innerText = myTexts[index]);
             isEnglish = false;
         } else {
             btn.innerText = "🇬🇧 English";
+            confirmMsg.innerText = "🇲🇲 မြန်မာသို့ ပြောင်းမည်";
             header.innerText = "Myanmar Recapper Group";
             const enTexts = ["English/China Videos", "Auto Recap", "Translated Movies", "Video Download", "Create Photos", "Translate", "Text to Speech", "Manual Edit Videos", "🛒 Shop"];
             ids.forEach((id, index) => document.getElementById(id).innerText = enTexts[index]);
