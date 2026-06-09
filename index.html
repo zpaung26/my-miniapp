@@ -81,15 +81,15 @@
         if (isEnglish) {
             btn.innerText = "🇲🇲 မြန်မာ";
             document.getElementById("btn1").innerText = "အင်္ဂလိပ်/တရုတ် ဗီဒီယိုများ";
-            confirmMsg.innerText = "🇬🇧 Switch to English";
-            header.innerText = "မြန်မာရီကပ်ပါး ဂရု";
+            confirmMsg.innerText = "🇬🇧 English";
+            header.innerText = "Myanmar Recapper Group";
             const myTexts = ["အလိုအလျောက် Recap", "ဘာသာပြန် ဇာတ်ကား", "Video ဒေါင်းလုပ်", "ဓာတ်ပုံဖန်တီးမည်", "ဘာသာပြန်မည်", "စာသားမှအသံ", "Manual Edit Videos", "🛒 ဆိုင်"];
             ids.forEach((id, index) => document.getElementById(id).innerText = myTexts[index]);
             isEnglish = false;
         } else {
             btn.innerText = "🇬🇧 English";
             document.getElementById("btn1").innerText = "English/China Videos";
-            confirmMsg.innerText = "🇲🇲 မြန်မာသို့ ပြောင်းမည်";
+            confirmMsg.innerText = "🇲🇲 မြန်မာ";
             header.innerText = "Myanmar Recapper Group";
             const enTexts = ["Auto Recap", "Translated Movies", "Video Download", "Create Photos", "Translate", "Text to Speech", "Manual Edit Videos", "🛒 Shop"];
             ids.forEach((id, index) => document.getElementById(id).innerText = enTexts[index]);
