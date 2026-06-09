@@ -8,41 +8,57 @@
         body { font-family: sans-serif; padding: 20px; background: #f0f2f5; }
         .back-btn { display: inline-block; padding: 10px 20px; background: #333; color: white; text-decoration: none; border-radius: 8px; margin-bottom: 20px; }
         
-        /* ၄ ခုကို ၂ ခုတွဲ ပုံစံထုတ်ပေးမယ့် Code */
         .btn-container {
             display: grid;
-            grid-template-columns: 1fr 1fr; /* ၂ ကွက် */
+            grid-template-columns: 1fr 1fr;
             gap: 15px;
             max-width: 450px;
             margin: auto;
         }
 
         .btn-manual {
-            height: 80px;
+            height: 90px;
             display: flex;
+            flex-direction: column; /* Icon နဲ့ စာကို အပေါ်အောက်ထားဖို့ */
             align-items: center;
             justify-content: center;
-            background: #ffffff;
             border: none;
-            border-radius: 12px;
+            border-radius: 15px;
             font-weight: bold;
-            color: #333;
+            color: white;
             box-shadow: 0 4px 6px rgba(0,0,0,0.1);
             cursor: pointer;
             transition: 0.2s;
+            font-size: 14px;
         }
 
-        .btn-manual:active { transform: translateY(2px); }
+        .btn-manual:active { transform: translateY(3px); box-shadow: none; }
+        
+        /* ခလုတ်အရောင်များ */
+        .new-video { background: #4caf50; } /* အစိမ်း */
+        .tutorial  { background: #2196f3; } /* အပြာ */
+        .save      { background: #ff9800; } /* လိမ္မော် */
+        .history   { background: #9c27b0; } /* ခရမ်း */
+
+        .icon { font-size: 24px; margin-bottom: 5px; }
     </style>
 </head>
 <body>
     <a href="index.html" class="back-btn">⬅️ Back</a>
     
     <div class="btn-container">
-        <button class="btn-manual">New Video</button>
-        <button class="btn-manual">Tutorial</button>
-        <button class="btn-manual">Save Draft</button>
-        <button class="btn-manual">History</button>
+        <button class="btn-manual new-video">
+            <span class="icon">➕</span> New Video
+        </button>
+        <button class="btn-manual tutorial">
+            <span class="icon">📚</span> Tutorial
+        </button>
+        <button class="btn-manual save">
+            <span class="icon">💾</span> Save Draft
+        </button>
+        <button class="btn-manual history">
+            <span class="icon">🕒</span> History
+        </button>
     </div>
 </body>
 </html>
