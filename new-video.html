@@ -3,31 +3,34 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>P4 - Video Editor Pro</title>
+    <title>P4 - Video Editor</title>
     <style>
         body, html { margin: 0; padding: 0; width: 100%; height: 100dvh; background: #000; color: white; font-family: sans-serif; overflow: hidden; }
         .page { display: flex; flex-direction: column; height: 100dvh; }
 
-        /* Button Area (5%) */
+        /* Top Button Area (5%) */
         .top-button-area { height: 5dvh; background: #111; display: flex; align-items: center; justify-content: space-between; padding: 0 10px; border-bottom: 1px solid #333; }
         .action-btn { background: #555; border: none; color: white; padding: 3px 12px; border-radius: 5px; cursor: pointer; font-size: 11px; box-shadow: 0 3px 0 #222; transition: all 0.1s; }
         .action-btn:active { transform: translateY(3px); box-shadow: 0 0 0 #222; }
         .export-btn { background: #007bff; box-shadow: 0 3px 0 #004a99; }
 
-        /* Preview Area (40%) */
-        .preview-area { height: 40dvh; background: #000; display: flex; justify-content: center; align-items: center; position: relative; }
+        /* Preview Area (45%) */
+        .preview-area { height: 45dvh; background: #000; display: flex; justify-content: center; align-items: center; position: relative; }
         #videoPreview, #imgPreview { max-width: 100%; max-height: 100%; object-fit: contain; display: none; }
-        
-        /* Timeline Area (40%) */
-        .timeline-area { height: 40dvh; background: #1a1a1a; border-top: 1px solid #333; display: flex; flex-direction: column; overflow-x: auto; }
-        .track { height: 33.3%; border-bottom: 1px solid #333; display: flex; align-items: center; padding-left: 10px; }
-        .track-label { width: 50px; font-size: 9px; color: #666; font-weight: bold; }
-        .clip { height: 70%; background: #007bff; border-radius: 4px; margin: 0 2px; cursor: pointer; min-width: 80px; display: flex; align-items: center; justify-content: center; font-size: 10px; }
 
-        /* Toolbar (15%) */
-        .toolbar { height: 15dvh; background: #000; display: flex; justify-content: space-around; align-items: center; border-top: 1px solid #333; }
-        .tool-item { display: flex; flex-direction: column; align-items: center; font-size: 10px; cursor: pointer; color: #ccc; }
-        .tool-item span { font-size: 18px; margin-bottom: 2px; }
+        /* Timeline Area (45%) */
+        .timeline-area { height: 45dvh; background: #1a1a1a; display: flex; border-top: 1px solid #333; overflow: hidden; }
+        .side-tools { width: 80px; display: flex; flex-direction: column; justify-content: center; align-items: center; border-right: 1px solid #333; gap: 15px; }
+        .tool-box { font-size: 9px; text-align: center; color: #ccc; cursor: pointer; }
+        .tracks-container { flex-grow: 1; overflow-x: auto; display: flex; flex-direction: column; justify-content: center; }
+        .track-row { height: 40px; border-bottom: 1px solid #333; display: flex; align-items: center; padding: 5px; }
+        .video-clip { height: 35px; width: 120px; background: #fff; border-radius: 2px; border: 1px solid #888; color: #000; font-size: 9px; display: flex; align-items: center; padding-left: 5px; overflow: hidden; white-space: nowrap; }
+        .add-btn { background: #333; color: #fff; border: none; padding: 4px 8px; font-size: 9px; cursor: pointer; margin-left: 5px; border-radius: 3px; }
+
+        /* Bottom Toolbar (5%) */
+        .bottom-toolbar { height: 5dvh; background: #000; display: flex; justify-content: space-around; align-items: center; border-top: 1px solid #333; font-size: 9px; color: #ccc; text-align: center; }
+        .tool-item { cursor: pointer; }
+        .tool-item span { font-size: 16px; display: block; }
     </style>
 </head>
 <body>
@@ -50,12 +53,19 @@
     </div>
 
     <div class="timeline-area">
-        <div class="track" id="videoTrack"><div class="track-label">Video</div></div>
-        <div class="track" id="audioTrack"><div class="track-label">Audio</div></div>
-        <div class="track" id="textTrack"><div class="track-label">Text</div></div>
+        <div class="side-tools">
+            <div class="tool-box"><span>🔇</span><br>Mute</div>
+            <div class="tool-box"><span>✂️</span><br>AI Clip</div>
+            <div class="tool-box"><span>📝</span><br>Cover</div>
+        </div>
+        <div class="tracks-container">
+            <div class="track-row" id="videoTrack"></div>
+            <div class="track-row"><button class="add-btn">+ Add audio</button></div>
+            <div class="track-row"><button class="add-btn">+ Add text</button></div>
+        </div>
     </div>
 
-    <div class="toolbar">
+    <div class="bottom-toolbar">
         <div class="tool-item"><span>✂️</span>Edit</div>
         <div class="tool-item"><span>🎵</span>Audio</div>
         <div class="tool-item"><span>📝</span>Text</div>
@@ -69,12 +79,11 @@
     const videoPreview = document.getElementById('videoPreview');
     const imgPreview = document.getElementById('imgPreview');
 
-    function addClipToTimeline(file) {
+    function addClip(file) {
         const clip = document.createElement('div');
-        clip.className = 'clip';
-        clip.innerText = file.name.substring(0, 10) + '...';
+        clip.className = 'video-clip';
+        clip.innerText = file.name;
         videoTrack.appendChild(clip);
-
         clip.onclick = () => {
             const url = URL.createObjectURL(file);
             if (file.type.startsWith('video')) {
@@ -89,13 +98,8 @@
         };
     }
 
-    document.getElementById('videoInput').addEventListener('change', (e) => {
-        Array.from(e.target.files).forEach(addClipToTimeline);
-    });
-
-    document.getElementById('imgInput').addEventListener('change', (e) => {
-        Array.from(e.target.files).forEach(addClipToTimeline);
-    });
+    document.getElementById('videoInput').addEventListener('change', (e) => Array.from(e.target.files).forEach(addClip));
+    document.getElementById('imgInput').addEventListener('change', (e) => Array.from(e.target.files).forEach(addClip));
 </script>
 </body>
 </html>
